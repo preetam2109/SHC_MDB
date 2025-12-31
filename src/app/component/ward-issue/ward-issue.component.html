@@ -1,0 +1,191 @@
+<div class="container mt-4">
+    <!-- <div>
+      <p style="color:red">नोट :  Consumption ,Current Stock के अनुसार  3 माह का इंडेंट टेबलेट/केप्सूल/वायल/इंजेक्शन/एमपुल/सिरप/बाटल/क्रीम/ड्रॉप में प्रतिनग के अनुसार भरेंगे |</p>
+    </div> -->
+    <h3 class="text-center mt-4" style="color: rgb(50, 50, 164);"> <strong>Item wise Consumption Transaction</strong></h3>
+
+    <button class="btn btn-success btn-sm backbutton" (click)="backtoPreviousPage()" style="display: flex; justify-content: flex-start;" >Back</button>
+    <!-- Indent Info -->
+    <div class="d-flex justify-content-center">
+      <div class="card" style="width: 35rem; margin: 10px;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="card-text"><strong>Issue Type:</strong> {{ wardname }}</p>
+            </div>
+            <div class="col-md-6 text-right">
+              <p class="card-text"><strong>Issue No:</strong> {{ issueno }}</p>
+            </div>
+            <div class="col-md-6 text-left"> 
+              <p class="card-text"><strong>Issued Date:</strong> {{ issuedate | date:'dd/MM/yyyy' }}</p>
+            </div>
+            <div class="col-md-6 text-right"> 
+              <p style="color:green; display: flex; justify-content: center;"><strong>Status:</strong> Incomplete</p>
+            </div>
+  
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dropdowns -->
+    <!-- <label for="drugCategory">Category</label>
+    <select class="form-control" id="categoryid">
+      <option value="" disabled selected>Select an item</option>
+      <option *ngFor="let item of drug" [value]="item.categoryid">
+        {{ item.categoryname }}
+      </option>
+    </select> -->
+    <!-- <div class="row">
+      <div class="col-md-6 d-flex justify-content-start">
+        Align these buttons to the left
+        <button class="btn btn-outline-info btn-sm" (click)="getHCitems(1)">Drugs</button>
+        <button class="btn btn-outline-primary btn-sm" (click)="getHCitems(2)" style="margin-left:5px;">Consumables</button>
+      </div>
+      <div class="col-md-6 d-flex justify-content-end">
+        Align this button to the right
+        <button class="btn btn-outline-primary btn-sm" (click)="printPDF()">Print PDF</button>
+        </div>
+      </div> -->
+      
+      <div style="display: flex; flex-direction: column; align-items: flex-start;">
+        <!-- Freeze button -->
+        <button class="btn btn-primary btn-sm freez-button" style="margin-bottom: 10px;" (click)="freezData()">
+          Freez
+        </button>
+      
+        <!-- Search input -->
+        <input type="text" class="form-control col-12 col-md-6 col-lg-4"  placeholder="Search items" [(ngModel)]="searchTerm" />
+      </div>
+      
+
+      <!-- Item List Table -->
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <!-- <th>Select</th> -->
+            <!-- <th>SR</th> -->
+            <th>Category</th>
+            <th>Code</th>
+            <th>Type</th>
+            <th>Item</th>
+            <th>Strength</th>
+            <th>Current Stock</th>
+            <!-- <th></th> -->
+            <th>Enter Issue Qty</th>
+            <!-- <th>issueitemid</th> -->
+            <th>Action</th>
+            <th>Batch Info</th> <!-- New column for details -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredItems(); let i = index">
+            <!-- <td >
+              <input type="checkbox"  (change)="onItemSelect(item.itemId, $event)" >
+            </td> -->
+            <!-- <td>{{ i + 1 }}</td> -->
+            <td>{{item.categoryName}}</td>
+            <td>{{ item.itemCode }}</td>
+            <td>{{ item.itemtypename }}</td>
+            <td style="text-align:left">{{ item.itemName }}</td>
+            <td style="text-align:left">{{ item.strength1 }}</td>
+            <!-- <td>{{ item.multiple }}</td> -->
+            <td>{{ item.readyForIssue }}</td>
+            <td>
+              <input
+                style="width: 70px;"
+                type="number"
+                [(ngModel)]="item.facissueqty"
+                (keypress)="validateNumberInput($event)"         
+                (change)="removeNonNumeric($event)" 
+                (input)="updateIssueQty($event, item.itemId, item.issueitemid)"
+                [step]="10"                    
+                [min]="10"                      
+                name="issueQuantity"
+                required
+                #issueQuantity="ngModel"
+                [ngClass]="{'invalid-input': !validateIssueQty(item)}"
+              >
+              
+              <!-- Validation messages -->
+              <div *ngIf="issueQuantity.invalid && (issueQuantity.dirty || issueQuantity.touched)" class="error-message">
+                <!-- Error for required field -->
+                <div *ngIf="issueQuantity.errors?.['required']" style="color: red;">
+                  Quantity is required.
+                </div>
+                <!-- Error for exceeding Current Stock -->
+                <div *ngIf="!validateIssueQty(item)" style="color: red;">
+                  Quantity cannot exceed Current Stock ({{ item.readyForIssue }}).
+                </div>
+              </div>
+            </td>
+            
+            
+            <!-- <td >{{ item.issueitemid }}</td> -->
+            <td>
+              <button class="btn btn-danger btn-sm p-1" style="font-size: 0.6rem;" (click)="deleteIssueItemIdIfExist(item.issueitemid)">
+                <i class="bi bi-trash" style="font-size: 0.6rem;"></i>
+              </button>
+            </td>
+            
+            <td *ngIf="item.issueitemid > 0">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <!-- <th>SNo</th> -->
+                    <th>Batch</th>
+                    <th>Mfg DT</th>
+                    <th>Exp DT</th>
+                    <th>QTY</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Use the facilityIssueBatchesMap with issueitemid to fetch the correct data -->
+                  <tr *ngFor="let batch of facilityIssueBatchesMap[item.issueitemid]; let j = index">
+                    <!-- <td>{{ j + 1 }}</td> -->
+                    <td>{{ batch.batchno }}</td>
+                    <td>{{ batch.mfgdate | date: 'dd-MM-yyyy' }}</td>
+                    <td>{{ batch.expdate | date: 'dd-MM-yyyy' }}</td>
+                    <td>{{ batch.facissueqty }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+            
+            <!-- <td *ngIf="item.issueitemid > 0">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Sl. No.</th>
+                    <th>Batch No.</th>
+                    <th>Mfg Date</th>
+                    <th>Exp Date</th>
+                    <th>fac Issueqty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let batch of FacilityIssueBatches; let j = index">
+                    <td>{{ j + 1 }}</td>
+                    <td>{{ batch.batchno }}</td>
+                    <td>{{ batch.mfgdate }}</td>
+                    <td>{{ batch.expdate }}</td>
+                    <td>{{ batch.facissueqty }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td> -->
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-success btn-lg save-button" (click)="saveData()" 
+    >
+    Add
+    <!-- (change)="isAnyInvalid()"  -->
+    </button>
+    
+  </div>
+  

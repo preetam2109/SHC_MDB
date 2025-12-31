@@ -1,0 +1,39 @@
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card p-4" style="width: 350px;">
+    <!-- <h4 class="text-center mb-4"style="color: rgb(50, 50, 164);"><strong>Add New Indent to Warehouse </strong></h4> -->
+    <h4 class="text-center mb-4"style="color: rgb(50, 50, 164);"><strong>Add New Indent to Parent Facility </strong></h4>
+
+    <!-- Bind formGroup to indentForm -->
+    <form [formGroup]="indentForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Select item dropdown -->
+      <div class="form-group mb-3">
+        <label for="itemSelect" class="form-label">
+          <span class="text-danger">*</span>Program Type  <!-- Add red asterisk for required fields -->
+        </label>
+        <select id="itemSelect" class="form-select" formControlName="programid" required>
+          <option value="" disabled selected>Select Program</option>
+          <option *ngFor="let item of MonthIndentProgram" [value]="item.programid"  >{{ item.program }}</option>
+        </select>
+      </div>
+      
+
+      <!-- Indent Date input -->
+      <div class="form-group mb-4">
+        <label for="indentDate" class="form-label">Indent Date:</label>
+        <div class="input-group">
+          <input readonly  type="text" class="form-control" id="indentDate" formControlName="indentDt" [min]="minDate" [value]="currentDate">
+          <span class="input-group-text bg-white">
+            <i class="bi bi-calendar4" style="color: blue;"></i> <!-- Bootstrap icon for calendar -->
+          </span>
+        </div>
+      </div>
+      
+
+      <!-- Generate Button -->
+      <div class="d-grid">
+        <button type="submit" class="btn btn-success" [disabled]="!indentForm.valid">Generate</button>
+      </div>
+    </form>
+  </div>
+</div>

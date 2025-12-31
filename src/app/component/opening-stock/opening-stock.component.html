@@ -1,0 +1,240 @@
+<div class="container mt-4">
+  <button class="btn btn-success btn-sm backbutton" (click)="backtoPreviousPage()" style="display: flex; justify-content: flex-start;" >Back</button>
+
+  <h1 class="text-center" style="color: maroon; font-weight: bold;">Opening Stock</h1>
+  <div class="row mb-3">
+    <div class="col-md-4 d-flex align-items-center">
+      <label for="openingStockNo" class="me-2"><strong>Opening Stock No:</strong> </label>
+      <span id="openingStockNo" style="color: blue;">{{ receiptNo }}</span>
+    </div>
+
+    <div class="col-md-4 d-flex align-items-center">
+      <label for="openingStockDate" class="me-2 mb-0" style="white-space: nowrap;">Opening Stock Date:</label>
+      <input type="text" class="form-control" id="openingStockDate" [(ngModel)]="openingStockDate" readonly>
+    </div>
+    
+    
+    <div class="col-md-4 text-end" *ngIf="showButtons">
+      <button class="btn btn-success me-2" (click)="onUpdate()">Generate</button>
+      <button class="btn btn-danger">Cancel</button>
+    </div>
+    <!-- <div class="receiptID mt-4 mb-3">
+      <span id="receiptID">{{ receiptID }}</span>
+    </div> -->
+  </div>
+  <div class="card  mb-4 " >
+  <div class="card-body">
+    
+  <form #batchForm="ngForm">
+    <div class="row mb-3">
+      <div class="col-md-3">
+        <label for="items" class="form-label">Select Items</label>
+        <ngx-select-dropdown
+          id="items"
+          [(ngModel)]="items"
+          #itemsModel="ngModel"   
+          [config]="config"
+          [options]="item"
+          bindLabel="itemcode"
+          bindValue="itemid"
+          placeholder="Select Item"
+          name="items"
+          required
+        ></ngx-select-dropdown>
+        <div *ngIf="itemsModel.invalid && itemsModel.touched && formSubmitted" class="text-danger">
+          Please select an item.
+        </div>
+      </div>
+      
+      
+  
+      <div class="col-md-2">
+        <label for="batchNo" class="form-label">Enter Batch No</label>
+        <input type="text" id="batchNo" class="form-control" [(ngModel)]="batchNo" name="batchNo" required #batchNoModel="ngModel">
+        <div *ngIf="batchNoModel.invalid && batchNoModel.touched" class="text-danger">
+          Batch No is required.
+        </div>
+      </div>
+  
+      <div class="col-md-2">
+        <label for="batchQuantity" class="form-label">Enter Batch Qty</label>
+        <input type="number" id="batchQuantity" class="form-control" [(ngModel)]="batchQuantity" name="batchQuantity" required min="1" #batchQuantityModel="ngModel">
+        <div *ngIf="batchQuantityModel.invalid && batchQuantityModel.touched" class="text-danger">
+          Enter a valid quantity.
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label for="mfgDate" class="form-label">Mfg Date (dd-MM-yyyy)</label>
+        <input type="text" 
+               id="mfgDate" 
+               class="form-control" 
+               [(ngModel)]="mfgDate" 
+               name="mfgDate" 
+               required 
+               #mfgDateModel="ngModel"
+               pattern="(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}" 
+               (keypress)="validateDateInput($event)"
+               maxlength="10" 
+               placeholder="dd-MM-yyyy">
+        <div *ngIf="mfgDateModel.invalid && mfgDateModel.touched" class="text-danger">
+          Enter a valid date in dd-MM-yyyy format.
+        </div>
+      </div>
+      
+      <div class="col-md-2">
+        <label for="expDate" class="form-label">Exp Date (dd-MM-yyyy)</label>
+        <input type="text" 
+               id="expDate" 
+               class="form-control" 
+               [(ngModel)]="expDate" 
+               name="expDate" 
+               required 
+               #expDateModel="ngModel"
+               pattern="(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}" 
+               (keypress)="validateDateInput($event)"
+               maxlength="10" 
+               placeholder="dd-MM-yyyy">
+        <div *ngIf="expDateModel.invalid && expDateModel.touched" class="text-danger">
+          Enter a valid date in dd-MM-yyyy format.
+        </div>
+        </div>
+      
+      
+      
+    </div>
+  
+    <button class="btn btn-primary mb-3" (click)="OnSaveBatch(batchForm)" [disabled]="batchForm.invalid">Save Batch Record</button>
+  </form>
+  <div>
+    <p style="color:red">नोट :  ओपनिंग स्टॉक में दवा-बैच के स्टॉक की एंट्री   Single Unit में अर्थात   टेबलेट/केप्सूल/वायल/इंजेक्शन/एमपुल/सिरप/बाटल/क्रीम/ड्रॉप में प्रतिनग के अनुसार करेंगे |</p>
+  </div>
+</div>
+</div>
+  
+  <!-- <div class="card shadow mb-4">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">Batch Record Form</h5>
+  </div>
+  <div class="card-body">
+    <form #batchForm="ngForm">
+      <div class="row mb-3">
+        <div class="col-md-3"> 
+          <label for="items" class="form-label">Select Items</label>
+          <select id="items" class="form-select" [(ngModel)]="items" name="items" required #itemsModel="ngModel">
+            <option value="">Select Item</option>
+            <option *ngFor="let item of item" [value]="item.itemid">
+              {{ item.itemcode }}
+            </option>
+          </select>
+          <div *ngIf="itemsModel.invalid && itemsModel.touched" class="text-danger">
+            Please select an item.
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <label for="batchNo" class="form-label">Enter Batch No</label>
+          <input type="text" id="batchNo" class="form-control" [(ngModel)]="batchNo" name="batchNo" required #batchNoModel="ngModel">
+          <div *ngIf="batchNoModel.invalid && batchNoModel.touched" class="text-danger">
+            Batch No is required.
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <label for="batchQuantity" class="form-label">Enter Batch Quantity</label>
+          <input type="number" id="batchQuantity" class="form-control" [(ngModel)]="batchQuantity" name="batchQuantity" required min="1" #batchQuantityModel="ngModel">
+          <div *ngIf="batchQuantityModel.invalid && batchQuantityModel.touched" class="text-danger">
+            Enter a valid quantity.
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <label for="mfgDate" class="form-label">Mfg Date (dd-MM-yyyy)</label>
+          <input type="text" 
+                 id="mfgDate" 
+                 class="form-control" 
+                 [(ngModel)]="mfgDate" 
+                 name="mfgDate" 
+                 required 
+                 #mfgDateModel="ngModel"
+                 pattern="(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}" 
+                 (keypress)="validateDateInput($event)"
+                 maxlength="10" 
+                 placeholder="dd-MM-yyyy">
+          <div *ngIf="mfgDateModel.invalid && mfgDateModel.touched" class="text-danger">
+            Enter a valid date in dd-MM-yyyy format.
+          </div>
+        </div>
+
+        <div class="col-md-2">
+          <label for="expDate" class="form-label">Exp Date (dd-MM-yyyy)</label>
+          <input type="text" 
+                 id="expDate" 
+                 class="form-control" 
+                 [(ngModel)]="expDate" 
+                 name="expDate" 
+                 required 
+                 #expDateModel="ngModel"
+                 pattern="(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-[0-9]{4}" 
+                 (keypress)="validateDateInput($event)"
+                 maxlength="10" 
+                 placeholder="dd-MM-yyyy">
+          <div *ngIf="expDateModel.invalid && expDateModel.touched" class="text-danger">
+            Enter a valid date in dd-MM-yyyy format.
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" (click)="OnSaveBatch(batchForm)" [disabled]="batchForm.invalid">Save Batch Record</button>
+    </form>
+  </div>
+</div> -->
+
+  <!-- <button class="btn btn-primary mb-3" (click)="OnSaveBatch()">Save Batch Record</button> -->
+  <div class="row" *ngIf="stocks.length > 0">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead class="bg-success text-white">
+            <tr>
+              <th scope="col" class="col-1  border">SNo.</th>
+              <th scope="col" class="col-2  border">Code</th>
+              <th scope="col" class="col-3  border">Item Name</th>
+              <th scope="col" class="col-2  border">Strength</th>
+              <!-- <th scope="col" class="col-1  border">Unit</th> -->
+              <th hidden scope="col" class="col-2  border">Item Stock</th>
+              <th scope="col" class="col-2  border">Batch Qty</th>
+              <th scope="col" class="col-2  border">Batch No</th>
+              <th scope="col" class="col-2  border">Mfg Date</th>
+              <th scope="col" class="col-2  border">Exp Date</th>
+              <th scope="col" class="col-2  border">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stock of stocks; let i = index">
+              <th scope="row" class="col-1  border">{{ i + 1 }}</th>
+              <td class="col-2  border">{{ stock.itemcode }}</td>
+              <td class="col-3  border" style="text-align: left;">{{ stock.itemname }}</td>
+              <td class="col-2  border" style="text-align: left;">{{ stock.strengtH1 }}</td>
+              <!-- <td class="col-1  border">{{ stock.unit }}</td> -->
+              <td hidden class="col-2  border">{{ stock.openinG_QTY }}</td>
+              <td class="col-2  border">{{ stock.absrqty }}</td>
+              <td class="col-2  border">{{ stock.batchno }}</td>
+              <td class="col-2  border">{{ stock.mfgdate }}</td>
+              <td class="col-2  border">{{ stock.expdate }}</td>
+              <td class="col-2  border">
+                <button class="btn btn-danger btn-sm" (click)="deleteStock(stock)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-muted" *ngIf="stocks.length === 0">No data found for selected filter conditions</p>
+    </div>
+  </div>
+  
+  
+  <!-- <button class="btn btn-warning mb-3" (click)="freezeStock()" >Freeze Opening Stock</button> -->
+  <!-- <p class="text-danger text-center">Please ensure all the data before clicking on the Freeze button because you cannot add any item after that.</p> -->
+</div>

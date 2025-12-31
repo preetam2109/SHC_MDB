@@ -1,0 +1,80 @@
+<!-- <div class="container" style="background-color: #e2e3e5">
+  <h3>Chhattisgarh Medical Services Corporation Ltd.</h3>
+</div> -->
+<mat-tab-group (selectedTabChange)="selectedTabValue($event)">
+  <mat-tab label="Dashboard">
+    <ng-template matTabContent>
+      <div *ngIf="selectedTabIndex === 0">
+        <!-- <mat-card class="card-class mat-card mat-focus-indicator" style="background-color: #C1F666;">
+          <mat-card-header class="mat-card-header">
+            <mat-icon role="img" mat-card-avatar class="mat-icon notranslate mat-card-avatar material-icons mat-icon-no-color" style="color: red;" aria-hidden="true">medical_services</mat-icon>
+            <div class="mat-card-header-text">
+              <mat-card-title class="mat-card-title">1328</mat-card-title>
+              <mat-card-subtitle class="mat-card-subtitle">Total Facility</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+        </mat-card>
+        <mat-divider></mat-divider>
+        <mat-card class="card-class mat-card mat-focus-indicator" style="background-color:#CDD7B6;">
+          <mat-card-header class="mat-card-header">
+            <mat-icon role="img" mat-card-avatar class="mat-icon notranslate mat-card-avatar material-icons mat-icon-no-color" style="color: green;" aria-hidden="true">warehouse</mat-icon>
+            <div class="mat-card-header-text">
+              <mat-card-title class="mat-card-title">1010</mat-card-title>
+              <mat-card-subtitle class="mat-card-subtitle">Total Warehouse</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="card-class mat-card mat-focus-indicator" style="background-color: #74ec3c;">
+          <mat-card-header class="mat-card-header">
+            <mat-icon role="img" mat-card-avatar class="mat-icon notranslate mat-card-avatar material-icons mat-icon-no-color" style="color: blue;" aria-hidden="true">medication</mat-icon>
+            <div class="mat-card-header-text">
+              <mat-card-title class="mat-card-title">1010</mat-card-title>
+              <mat-card-subtitle class="mat-card-subtitle">Total Drugs</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="card-class mat-card mat-focus-indicator" style="background-color: #74ec3c;">
+          <mat-card-header class="mat-card-header">
+            <mat-icon role="img" mat-card-avatar class="mat-icon notranslate mat-card-avatar material-icons mat-icon-no-color" style="color: blue;" aria-hidden="true">medication</mat-icon>
+            <div class="mat-card-header-text">
+              <mat-card-title class="mat-card-title">180</mat-card-title>
+              <mat-card-subtitle class="mat-card-subtitle">Total Consumables and Others</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+        </mat-card>
+        <br>
+        <mat-card class="card-class mat-card mat-focus-indicator" style="background-color: #74ec3c;">
+          <mat-card-header class="mat-card-header">
+            <mat-icon role="img" mat-card-avatar class="mat-icon notranslate mat-card-avatar material-icons mat-icon-no-color" style="color: blue;" aria-hidden="true">medication</mat-icon>
+            <div class="mat-card-header-text">
+              <mat-card-title class="mat-card-title">450</mat-card-title>
+              <mat-card-subtitle class="mat-card-subtitle">Total Reagents</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+        </mat-card>
+        <mat-card class="card-class mat-card mat-focus-indicator" style="background-color: #74ec3c;">
+          <mat-card-header class="mat-card-header">
+            <mat-icon role="img" mat-card-avatar class="mat-icon notranslate mat-card-avatar material-icons mat-icon-no-color" style="color: blue;" aria-hidden="true">medication</mat-icon>
+            <div class="mat-card-header-text">
+              <mat-card-title class="mat-card-title">855</mat-card-title>
+              <mat-card-subtitle class="mat-card-subtitle">Total Ayush Drugs</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+        </mat-card> -->
+      </div>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="TAB 2">
+    <ng-template matTabContent>
+      <!-- <app-complaints *ngIf="selectedTabIndex ===1"></app-complaints> -->
+      <h1></h1>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="TAB 3">
+    <ng-template matTabContent>
+
+      <h1 *ngIf="selectedTabIndex === 2"></h1>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+<mat-divider></mat-divider>

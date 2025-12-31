@@ -1,0 +1,60 @@
+<div class="container">
+    <h3 class="text-center mt-4" style="color: rgb(50, 50, 164);"> <strong>Receipt From Other Facility</strong></h3>
+    <!-- <button class="btn btn-primary mb-3" (click)="getReceiptMasterFromWH()">Fetch Receipts</button> -->
+    <div style="display: flex; justify-content: flex-start;">
+
+      <button class="btn btn-outline-info btn-sm" style="margin-left: 5px;" (click)="getOtherFacIssueDetails('C')">Completed</button>
+      <button class="btn btn-outline-success btn-sm" style="margin-left: 5px;" (click)="getOtherFacIssueDetails('I')" >In Completed</button>
+      
+    </div>
+    <!-- Responsive Table Container -->
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">S.No</th>
+            
+            <th scope="col">From Facility</th>
+            <th scope="col">Indent No</th>
+            <th scope="col">Indented DT</th>
+            <th scope="col">Issue No</th>
+            <th scope="col">issued DT</th>
+            <th scope="col">Receipt No</th>
+            <th scope="col">Receipt DT</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of receiptMasterFromWH">
+            <td>{{ item.sno }}</td>
+            <td>{{ item.facilityname }}</td>
+            <td>{{ item.indentno }}</td>
+            <td>{{ item.indentdate }}</td>
+            <td>{{ item.issueno }}</td>
+            <td>{{ item.issueddate }}</td>
+            <td>{{ item.facreceiptno  }}</td>
+            <td>{{ item.facreceiptdate  }}</td>
+            <td>
+              <span [ngClass]="{
+                'text-danger': item.status === 'I',
+                'text-success': item.status === 'C'
+              }">
+              <a>
+                {{ getStatusText(item.status) }}
+              </a>
+              <!-- {{ item.istatus }} -->
+              </span>
+            </td>
+
+            <td>
+              <button class="btn btn-primary btn-sm"  [disabled]="item.status === 'C'"  (click)="receiptEntry(item)" >Show</button>
+              <button type="button" class="btn btn-primary btn-sm"  (click)="printReceiptVoucher(item)"   style="margin-left:5px;"><i class="bi bi-printer-fill"></i></button>
+              <button class="btn btn-danger btn-sm"  [disabled]="item.status === 'C' || facreceiptid===null"  (click)="deleteReceipt(item.facreceiptid)"     style="margin-left: 5px;" ><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

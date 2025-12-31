@@ -1,0 +1,111 @@
+<!-- <div class="container mt-4">
+    <h1 class="text-center">Opening Stock</h1>
+  
+     Facility Opening Stock Section 
+    <div class="card mt-3">
+      <div class="card-header bg-success text-white">
+        Facility Opening Stock
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-striped table-bordered">
+            <thead class="bg-success text-white">
+              <tr>
+                <th scope="col">Sl. No.</th>
+                <th scope="col">Opening Stock No.</th>
+                <th scope="col">Opening Stock Date</th>
+                <th scope="col">Facility Name</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stock of stocks; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ stock.facreceiptno }}</td>
+                <td>{{ stock.facreceiptdate }}</td>
+                <td>{{ stock.facreceipttype }}</td>
+                 <td>{{ stock.status }}</td> 
+                <td>
+                  <span [ngClass]="{
+                    'text-danger': stock.status === 'I',
+                    'text-success': stock.status === 'C'
+                  }">
+                    <a [routerLink]="['/OpStocksR']">
+                      {{ getStatusText(stock.status) }}
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="text-muted" *ngIf="stocks.length === 0">No data found for selected filter conditions</p>
+      </div>
+    </div>
+  </div>
+   -->
+  
+   <div class="container mt-5 p-4 shadow-lg rounded">
+    <h3 class="text-center "style="color: rgb(50, 50, 164);" ><strong>Opening Stock</strong></h3>
+    <button type="button" class="btn btn-primary" [hidden]="getRowLength() >= 1" (click)="GeneratePage()">Generate Opening Stock</button>
+    
+    <!-- Facility Opening Stock Section -->
+    <div class="card mt-4 border-0">
+      <!-- <div class="card-header bg-gradient-success text-white rounded-top">
+        <h2 class="mb-0">Facility Opening Stock</h2>
+      </div> -->
+      <div class="card-body p-4">
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Sl. No.</th>
+                <th scope="col">Opening Stock No.</th>
+                <th scope="col">Stock Date</th>
+                <th scope="col">Facility</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stock of stocks; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ stock.facreceiptno }}</td>
+                <td>{{ stock.facreceiptdate | date }}</td>
+                <td>{{facilityName}}</td>
+                <td>
+                  <span [ngClass]="{
+                    'text-danger': stock.status === 'I',
+                    'text-success': stock.status === 'C'
+                  }">
+                    <a >
+                      {{ getStatusText(stock.status) }}
+                    </a>
+                    
+
+                  </span>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-primary btn-sm" (click)="getRouterLink(stock.status)" [disabled]="stock.status==='C'" style="margin-right: 2px;">Show</button>
+                  <button type="button" class="btn btn-primary btn-sm"  (click)="printOpeningStockReport(stock)"   style="margin-right:5px;"><i class="bi bi-printer-fill"></i></button>
+                  <button class="btn btn-danger  btn-sm" (click)="freezeStock()" [hidden]="stock.status==='C'" >Freeze Stock</button>
+                </td> 
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <p class="text-center text-muted mt-3" *ngIf="stocks.length === 0">No data found for selected filter conditions</p> -->
+         <div *ngFor="let stock of stocks;" [hidden]="stock.status==='C'">
+
+           <p class="text-danger text-center mt-4 flashing-text">
+             कृपया फ़्रीज़ बटन पर क्लिक करने से पहले सभी प्रारंभिक स्टॉक विवरण सुनिश्चित कर लें क्योंकि फ़्रीज़ के बाद आप संपादित/हटा नहीं सकते।
+           </p>
+           <p class="text-danger text-center mt-4 flashing-text">
+             Please ensure all the opening stock details before clicking on the Freeze button because you cannot edit/delete after freeze.
+           </p>
+         </div>
+        
+      </div>
+    </div>
+  </div>
+  

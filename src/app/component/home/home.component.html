@@ -1,0 +1,65 @@
+<div class="container mt-3">
+    <div class="d-flex flex-wrap justify-content-center">
+        <!-- Facility Information Card -->
+        <div class="card mx-2 shadow-lg" style="width: 32rem; margin: 10px; background-color: #f8f9fa; border-left: 5px solid #17a2b8;">
+            <h1 class="text-center " style="color: #662523;">  <strong>Facility Information </strong> </h1>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Facility:</strong> {{facilityname}}</p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <p class="card-text"><strong>Block:</strong> NA</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>District Name:</strong> {{districtname}}</p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <p class="card-text"><strong>Parent Facility:</strong> {{parentfac}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Incharge:</strong> {{contactpersonname}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Mobile No:</strong> {{phonE1}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warehouse Information Card -->
+        <div class="card mx-2 shadow-lg" style="width: 32rem; margin: 10px; background-color: #f8f9fa; border-left: 5px solid #28a745;">
+            <h1 class="text-center " style="color: #662523;" ><strong> Warehouse Information</strong> </h1>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Warehouse Name:</strong> {{warehousename}}</p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <p class="card-text"><strong>Email:</strong> {{whemail}}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="card-text"><strong>Contact Person:</strong> {{whcontact}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flashing-text" [hidden]="status==='C'" >
+            
+            <p class="text-danger text-center mt-4 flashing-text">
+                <strong>
+
+                    कृपया पहले ओपनिंग स्टॉक विवरण दर्ज कर फ्रीज़ करें,तत्पश्चात ही अन्य मेनू  जैसे Indent to Warehouse, Consumption, Stock Report आदि का उपयोग करें   |
+                </strong>
+              </p>
+              <p class="text-danger text-center mt-4 flashing-text">
+                <strong>
+                    Please Finish Opening Stock Entry before use of other option such as Indent to Warehouse, Consumption, Stock Report etc
+
+                </strong>
+              </p>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="container mt-4">
+  <!-- <h3 class="text-center "style="color: rgb(50, 50, 164);" ><strong>Indent To Warehouse</strong></h3> -->
+  <h3 class="text-center "style="color: rgb(50, 50, 164);" ><strong>Indent to Parent Facility</strong></h3>
+  <div class="d-flex justify-content-center align-items-center ">
+
+    <div class="card mx-2 shadow-lg" style="width: 52rem; margin: 10px; background-color: #f8f9fa; border-left: 5px solid #17a2b8;">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="card-text" style="color: rgb(110, 0, 132);"><strong>First Indent Opening:</strong> {{firstindentopening | date:'dd-MM-yyyy'}}</p>
+          </div>
+          <div class="col-md-6 text-right">
+            <p class="card-text" style="color:rgb(110, 0, 132);"><strong>First Indent Closing:</strong> {{firstindentclosing | date:'dd-MM-yyyy' }}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="card-text text-primary"><strong>Next Indent Time between:</strong> {{indentopeningdate | date:'dd-MM-yyyy' }} to {{indentclosingdate | date:'dd-MM-yyyy'}}</p>
+
+          </div>
+          <div class="col-md-6">
+            <p class="card-text">
+              <!-- <strong>regularopeningcase Value: {{ regularopeningcase }}</strong> -->
+              <strong [style.color]="regularopeningcase === 1 ? 'green' : 'red'">
+                Indent Generation:
+              </strong>
+              <a [style.color]="regularopeningcase === 1 ? 'green' : 'red'">
+                {{ IndentGenStatus(regularopeningcase) }}
+              </a>
+            </p>
+          </div>
+          
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+    <div style="margin-bottom: 10px;">
+         <button 
+      type="button" 
+      class="btn btn-primary"  
+      (click)="AddNewIndent()"  
+      (click)="getIncompleteCount()">
+      Add New Indent
+    </button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">S.NO</th>
+            <th scope="col">Indent DT</th>
+            <th scope="col">Indented Items</th>
+            <th scope="col">Warehouse Issued Dt  </th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+            <!-- <th scope="col">NOC ID</th> -->
+            <!-- <th scope="col">Items Requested</th> -->
+            <!-- <th scope="col">Warehouse ID</th> -->
+            <!-- <th scope="col">Request No.</th> -->
+            <!-- <th scope="col">Indent ID</th> -->
+            <!-- <th scope="col">Facility Receipt ID</th> -->
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of FacMonthIndentReport; let i = index">
+            <td>{{ i + 1 }}</td>
+            <!-- <td>{{ item.nocid }}</td> -->
+            <td>{{ item.reqDate |date:'dd-MM-yyyy' }}</td>
+            <td>{{ item.nositemsreq }}</td>
+            <td>{{ item.whissuedt ? (item.whissuedt | date:'dd-MM-yyyy') : 'N/A' }}</td>
+            <td>
+              <span [ngClass]="{
+                'text-danger': item.istatus === 'P' || item.istatus === 'I',
+                'text-success': item.istatus === 'C'
+              }">
+              <a>
+                {{ getStatusText(item.istatus) }}
+              </a>
+              <!-- {{ item.istatus }} -->
+              </span>
+            </td>
+            <td>
+              <button type="button" class="btn btn-primary btn-sm" (click)="WarehouseIndent(item)" [disabled]="item.istatus==='C' || item.istatus === 'P' " 
+              >show</button>
+              <button type="button" class="btn btn-primary btn-sm"  (click)="printINdent(item)"   style="margin-left:5px;"><i class="bi bi-printer-fill"></i></button>
+              <!-- <button type="button" class="btn btn-danger btn-sm" (click)="deleteIndent(item.nocid)"  style="margin-left:5px;"  [disabled]="item.istatus==='C'">Delete Indent</button> -->
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteIndent(item.nocid)" style="margin-left: 5px;" [disabled]="item.istatus === 'C' || item.istatus === 'P' ">
+                <i class="bi bi-trash"></i>
+              </button>
+              
+              
+            </td>
+            <!-- <td>{{ item.nositemsreq }}</td> -->
+            <!-- <td>{{ item.warehouseid }}</td> -->
+            <!-- <td>{{ item.reqno }}</td> -->
+            <!-- <td>{{ item.indentid }}</td> -->
+            <!-- <td>{{ item.facreceiptid || 'N/A' }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

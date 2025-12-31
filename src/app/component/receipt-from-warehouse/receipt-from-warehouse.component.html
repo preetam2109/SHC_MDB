@@ -1,0 +1,54 @@
+<div class="container">
+    <h3 class="text-center mt-4" style="color: rgb(50, 50, 164);" ><strong>Receipt From Warehouse</strong></h3>
+    <!-- <button class="btn btn-primary mb-3" (click)="getReceiptMasterFromWH()">Fetch Receipts</button> -->
+  
+    <!-- Responsive Table Container -->
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">S.No</th>
+            <th scope="col">Indent No</th>
+            <th scope="col">Indent DT</th>
+            <th scope="col">Indented Item</th>
+            <th scope="col">Issued Items</th>
+            <th scope="col">Warehouse Issue No</th>
+            <th scope="col">WH DT</th>
+            <th scope="col">Rec.DT</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of receiptMasterFromWH">
+            <td>{{ item.sno }}</td>
+            <td>{{ item.reqno }}</td>
+            <td>{{ item.reqdate | date:'dd-MM-yyyy' }}</td>
+            <td>{{ item.nositemsissued }}</td>
+            <td>{{ item.nositemsreq }}</td>
+            <td>{{ item.whissueno }}</td>
+            <td>{{ item.whissuedt | date:'dd-MM-yyyy' }}</td>
+            <td>{{ item.facreceiptdate | date:'dd-MM-yyyy' }}</td>
+            <td>
+              <span [ngClass]="{
+                'text-danger': item.rstatus === 'IN',
+                'text-success': item.rstatus === 'C'
+              }">
+              <a>
+                {{ getStatusText(item.rstatus) }}
+              </a>
+              <!-- {{ item.istatus }} -->
+              </span>
+            </td>
+
+            <td>
+              <button class="btn btn-primary btn-sm"  [disabled]="item.rstatus === 'C'"  (click)="receiptEntry(item)" >show</button>
+              <button type="button" class="btn btn-primary btn-sm"  (click)="printReceiptVoucher(item)"   style="margin-left:5px;"><i class="bi bi-printer-fill"></i></button>
+              <button class="btn btn-danger btn-sm"  [disabled]="item.rstatus === 'C' || item.facreceiptdate==null "  (click)="deleteReceipt(item.facreceiptid)" style="margin-left: 5px;" ><i class="bi bi-trash"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

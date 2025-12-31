@@ -1,0 +1,37 @@
+<button class="btn btn-primary btn-sm" style="display: flex; flex-direction: flex-start;" (click)="backbutton()" >Back</button>
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-4" style="width: 350px;">
+      <h4 class="text-center mb-4">Add Receipt Date</h4>
+  
+      <!-- Bind formGroup to indentForm -->
+      <form [formGroup]="indentForm" (ngSubmit)="onSubmit()">
+        
+        
+  
+        <!-- Indent Date input -->
+        <div class="form-group mb-4">
+          <label for="indentDate" class="form-label">Receipt Date:</label>
+          <div class="input-group">
+            <input 
+              type="date" 
+              class="form-control" 
+              id="indentDate" 
+              formControlName="indentDt" 
+              [attr.min]="minDate" 
+              [attr.max]="currentDate" 
+              [value]="currentDate">
+            <span class="input-group-text bg-white">
+              <i class="bi bi-calendar4" style="color: blue;"></i>
+            </span>
+          </div>
+        </div>
+        
+  
+        <!-- Generate Button -->
+        <div class="d-grid">
+          <button type="submit" class="btn btn-success">Generate</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

@@ -1,0 +1,103 @@
+.opening-stock-container {
+    background-color: #f0f4f8;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .header div {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header label {
+    margin-right: 8px;
+  }
+  
+  .form-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .btn-update,
+  .btn-cancel,
+  .btn-save,
+  .btn-freeze {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .btn-cancel {
+    background-color: #f44336; /* Red */
+  }
+  
+  .btn-save {
+    background-color: #008CBA; /* Blue */
+  }
+  
+  .btn-freeze {
+    background-color: #FFA500; /* Orange */
+  }
+  
+  .report-section {
+    margin-bottom: 20px;
+  }
+  
+  .warning {
+    color: red;
+    text-align: center;
+  }
+  .border {
+    border: 1px solid #ddd;  /* Add border to each grid item */
+  
+  }
+  .card {
+    border: 1px solid #ddd ; /* Adjust border color and width as needed */
+    border-radius: 0;
+  }
+ 
+  
+  
+ 
+
+  
+  
+  

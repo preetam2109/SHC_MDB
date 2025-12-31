@@ -1,0 +1,29 @@
+/* Floating Save Button Styles */
+.save-button {
+    position: fixed !important; /* Keep the button fixed on the screen */
+    bottom: 20px !important;    /* Distance from the bottom of the viewport */
+    right: 20px !important;     /* Distance from the right of the viewport */
+    z-index: 1000 !important;   /* Ensure it appears above other content */
+    border-radius: 50px;        /* Optional: Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow effect */
+    background-color: #28a745; /* Custom background color */
+    color: #fff;               /* Custom text color */
+  }
+  /* .btn-outline-info {
+    margin-right: 10px; 
+  } */
+
+  .invalid-input {
+    border: 1px solid red;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+  }
+  
+
+
+  
+ 
+  

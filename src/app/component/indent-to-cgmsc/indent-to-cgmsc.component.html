@@ -1,0 +1,87 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="radio-group">
+      <label>
+        <input type="radio" formControlName="itemType" value="drugs"> Drugs
+      </label>
+      <label>
+        <input type="radio" formControlName="itemType" value="consumables"> Consumables
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label for="selectItem">Select Item</label>
+      <select id="selectItem" formControlName="selectItem">
+        <option *ngFor="let item of items" [value]="item">{{ item }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="itemName">Item Name</label>
+      <input type="text" id="itemName" formControlName="itemName">
+    </div>
+
+    <div class="form-group">
+      <label for="code">Code</label>
+      <input type="text" id="code" formControlName="code">
+    </div>
+
+    <div class="form-group">
+      <label for="strength">Strength</label>
+      <input type="text" id="strength" formControlName="strength">
+    </div>
+
+    <div class="form-group">
+      <label for="whStock">WH Stock</label>
+      <input type="text" id="whStock" formControlName="whStock">
+    </div>
+
+    <div class="form-group">
+      <label for="shcStock">SHC Stock</label>
+      <input type="text" id="shcStock" formControlName="shcStock">
+    </div>
+
+    <div class="form-group">
+      <label for="indentQty">Indent Qty</label>
+      <input type="text" id="indentQty" formControlName="indentQty">
+    </div>
+
+    <button type="submit">Save</button>
+  </form>
+
+</div>
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="itemName">
+    <th mat-header-cell *matHeaderCellDef> Item Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.itemName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <td mat-cell *matCellDef="let element"> {{element.code}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="strength">
+    <th mat-header-cell *matHeaderCellDef> Strength </th>
+    <td mat-cell *matCellDef="let element"> {{element.strength}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="whStock">
+    <th mat-header-cell *matHeaderCellDef> WH Stock </th>
+    <td mat-cell *matCellDef="let element"> {{element.whStock}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="shcStock">
+    <th mat-header-cell *matHeaderCellDef> SHC Stock </th>
+    <td mat-cell *matCellDef="let element"> {{element.shcStock}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="indentQty">
+    <th mat-header-cell *matHeaderCellDef> Indent Qty </th>
+    <td mat-cell *matCellDef="let element"> {{element.indentQty}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<!-- <button>Finalize</button> -->

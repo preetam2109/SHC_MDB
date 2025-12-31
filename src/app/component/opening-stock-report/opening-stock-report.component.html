@@ -1,0 +1,59 @@
+<!-- opening-stock-report.component.html -->
+<div class="container report-container">
+    <div class="row">
+        <div class="col-12 text-end  mt-3 ">
+            <button  class="btn btn-success back-button" (click)="goBack()">Back</button>
+        </div>
+        <h2 class="report-title">Opening Stock</h2>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <p class="report-date">Opening Stock Dated On: {{ openingStockDate }}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped stock-table">
+            <thead>
+              <tr>
+                <th>Sl. No.</th>
+                <th>Opening Stock</th>
+                <th>Item Code</th>
+                <th>Item Name</th>
+                <th>Unit</th>
+                <th>Strength</th>
+                <th>Batch No</th>
+                <th>MFG Date</th>
+                <th>Exp. Date</th>
+                <th>Batch Qty</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stock of stocks; let i = index">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>{{ stock.itemcode }}</td>
+                <td>{{ stock.itemname }}</td>
+                <td>{{ stock.strengtH1 }}</td>
+                <td>{{ stock.unit }}</td>
+                <td>{{ stock.openinG_QTY }}</td>
+                <td>{{ stock.absrqty }}</td>
+                <td>{{ stock.mfgdate }}</td>
+                <td>{{ stock.expdate }}</td>
+                <td>{{ stock.batchno }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <footer class="footer text-white py-3">
+    <div class="container text-center">
+      <p>&copy; 2013 <a class="text-white" href="https://www.cgmsc.gov.in/Home/HomePage.aspx">Chhattisgarh Medical Services Corporation Limited.</a> All Rights Reserved.</p>
+      <p>Version: 1.0.0.1001</p>
+      <p><a href="#" class="text-white">Send your complaint</a></p>
+    </div>
+  </footer>
+  
