@@ -184,11 +184,11 @@ export class DistfacilityInformationComponent {
   }
 
 
-  // onButtonClick(phone:any,contactpersonname:any){
-  //   console.log('phone:',phone,'contactpersonname:',contactpersonname);
-  //   // alert("This function will be available in the upcoming update!");
+  onButtonClick(phone:any,contactpersonname:any){
+    console.log('phone:',phone,'contactpersonname:',contactpersonname);
+    // alert("This function will be available in the upcoming update!");
   //  this.openmarqModal(phone);
-  // }
+  }
   
   openmarqModal(phone:any,contactpersonname:any): void {
     // this.sanitizedPdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
