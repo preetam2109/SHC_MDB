@@ -1,0 +1,54 @@
+
+
+.header-logo {
+  max-height: 120px;
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 3vw;
+  }
+
+  .cgmsctitle {
+    font-size: 4vw;
+  }
+
+  .sub-title {
+    font-size: 2vw;
+   
+  }
+}
+
+@media (max-width: 576px) {
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .header-logo {
+    max-height: 80px;
+  }
+  .footer-header-logo {
+    width: 100px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+  }
+}
+/* Footer styling */
+.footer {
+  background-color: #D4A136;
+}
+/* Dark green background color */
+/* color: */
+/* white;  */
+/* Text color */
+/* padding: 20px;
+text-align: center;
+position: fixed;
+bottom: 0;
+width: 100%; */
+.header{
+  /* border:2px solid black; */
+}
+
+

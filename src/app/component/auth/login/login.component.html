@@ -1,0 +1,413 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CGMSC DPDPMIS</title>
+</head>
+<body>
+    <header class="header bs-body-bg text-white py-3" 
+    >
+    <!-- style="background-color: #D4A136;" -->
+        <div class="container d-flex justify-content-between align-items-center">
+            <img src="assets/img/cg-govt.png" alt="Left Logo" class="header-logo">
+            <div class="header-title text-center">
+                <h1 class="cgmsctitle" style="color: #662523;"><strong>DPDMIS Portal for Ayushman Arogya Mandir</strong></h1>
+                <p class="sub-title " style="color: #662523;" ><strong>आरोग्यं परमं धनम् </strong></p>
+                <!-- अरोग्यम परमं धनम् -->
+            </div>
+            <img src="assets\img\nhmlogo.png" alt="Right Logo" class="header-logo">
+        </div>
+    </header>
+    <nav class="navbar navbar-expand-lg navbar-light " style="background-color: #D4A136; ">
+        <div class="container" >
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav"  >
+                <ul class="navbar-nav ms-auto" >
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><strong style="color:#662523;" >Home</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><strong style="color:#662523;" >Photo Gallaery</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"> <strong style="color:#662523;" >Video Gallary</strong></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><strong style="color:#662523;" > Contact</strong> </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="container mt-5">
+        <div class="row">
+          <div class="col-md-4">
+            <!-- <div class="card mb-4">
+
+                <div class="card-header " style="background-color: #D4A136; color: #662523;"><strong>AAM/SHC Login</strong></div>
+                <div class="card-body">
+                  <form (ngSubmit)="handleLogin()" >
+                    <div *ngIf="invalidLogin" class="alert alert-warning">
+                      {{ errorMessage }}
+                    </div>
+                    
+                    Email input with validation
+                    <div class="mb-3">
+                      <label for="emailid" class="form-label">User ID/Mobile NO</label>
+                      <input type="text" class="form-control" id="emailid" name="emailid" [(ngModel)]="emailid" placeholder=""
+                             (ngModelChange)="validateEmail()" #emailidModel="ngModel" required>
+                             
+                      <div *ngIf="emailError" class="text-danger">
+                        {{ emailError }}
+                      </div>
+                    </div>
+                    
+                    Password input with eye icon and validation
+                    <div class="mb-3 position-relative">
+                      <label for="pwd" class="form-label">Password</label>
+                      <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="pwd" name="pwd" [(ngModel)]="pwd" placeholder=""
+                             #pwdModel="ngModel" required>
+                      
+                      Eye icon to toggle password visibility
+                      <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                         (click)="togglePasswordVisibility()" style="position: absolute; right: 10px; top: 38px; cursor: pointer;"></i>
+                      
+                      Password required validation error
+                      <div *ngIf="pwdModel.invalid && pwdModel.touched" class="text-danger">
+                        Password cannot be empty.
+                      </div>
+                    </div>
+                    
+                    
+                    <div class="mb-3 form-check">
+                      <input type="checkbox" class="form-check-input" id="rememberMe">
+                      <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <div class="d-flex flex-column align-items-center">
+
+                      <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                  </form>
+                  
+                    <a (click)="forgetpassword()" class="d-block mt-3">Forgot Password?</a>
+                </div>
+            </div> -->
+            <div class="container mt-4">
+              <!-- Tabs for switching between AAM/SHC Login and Admin Login -->
+              <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link" [class.active]="activeTab === 'aamLogin'" (click)="activeTab = 'aamLogin'">AAM/SHC Login</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" [class.active]="activeTab === 'adminLogin'" (click)="activeTab = 'adminLogin'">District Admin Login</a>
+                </li>
+              </ul>
+            
+              <div class="tab-content mt-3">
+                <!-- AAM/SHC Login Tab Content -->
+                <div *ngIf="activeTab === 'aamLogin'" class="tab-pane active">
+                  <div class="card mb-4">
+                    <div class="card-header" style="background-color: #D4A136; color: #662523;">
+                      <strong>AAM/SHC Login</strong>
+                    </div>
+                    <div class="card-body">
+                      <form (ngSubmit)="handleLogin()">
+                        <div *ngIf="invalidLogin" class="alert alert-warning">
+                          {{ errorMessage }}
+                        </div>
+                        
+                        <!-- User ID/Mobile No input with validation -->
+                        <div class="mb-3">
+                          <label for="emailid" class="form-label">User ID/Mobile NO</label>
+                          <input type="text" class="form-control" id="emailid" name="emailid" [(ngModel)]="emailid" placeholder=""
+                                 (ngModelChange)="validateEmail()" #emailidModel="ngModel" required>
+                          <div *ngIf="emailError" class="text-danger">{{ emailError }}</div>
+                        </div>
+                        
+                        <!-- Password input with eye icon and validation -->
+                        <div class="mb-3 position-relative">
+                          <label for="pwd" class="form-label">Password</label>
+                          <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="pwd" name="pwd" [(ngModel)]="pwd" placeholder=""
+                                 #pwdModel="ngModel" required>
+                          <i class="fa" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'" 
+                             (click)="togglePasswordVisibility()" style="position: absolute; right: 10px; top: 38px; cursor: pointer;"></i>
+                          <div *ngIf="pwdModel.invalid && pwdModel.touched" class="text-danger">Password cannot be empty.</div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                          <input type="checkbox" class="form-check-input" id="rememberMe">
+                          <label class="form-check-label" for="rememberMe">Remember me</label>
+                        </div>
+                        
+                        <div class="d-flex flex-column align-items-center">
+                          <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                      </form>
+                      <a (click)="forgetpassword()" class="d-block mt-3">Forgot Password?</a>
+                    </div>
+                  </div>
+                </div>
+            
+                <!-- Admin Login Tab Content -->
+                <div *ngIf="activeTab === 'adminLogin'" class="tab-pane active">
+                  <div class="card mb-4">
+                    <div class="card-header" style="background-color: #D4A136; color: #662523;">
+                      <strong>Admin Login</strong>
+                    </div>
+                    <div class="card-body">
+                      <form (ngSubmit)="handleAdminLogin()">
+                        <div *ngIf="invalidAdminLogin" class="alert alert-warning">
+                          {{ adminErrorMessage }}
+                        </div>
+                        
+                        <!-- Admin Email/Username input with validation -->
+                        <div class="mb-3">
+                          <label for="adminEmail" class="form-label">User ID/Mobile No</label>
+                          <input type="text" class="form-control" id="adminEmail" name="adminEmail" [(ngModel)]="adminEmail" placeholder=""
+                                 #adminEmailModel="ngModel" required>
+                        </div>
+                        
+                        <!-- Admin Password input with eye icon and validation -->
+                        <div class="mb-3 position-relative">
+                          <label for="adminPwd" class="form-label">Password</label>
+                          <input [type]="showAdminPassword ? 'text' : 'password'" class="form-control" id="adminPwd" name="adminPwd" [(ngModel)]="adminPwd" placeholder=""
+                                 #adminPwdModel="ngModel" required>
+                          <i class="fa" [ngClass]="showAdminPassword ? 'fa-eye-slash' : 'fa-eye'" 
+                             (click)="toggleAdminPasswordVisibility()" style="position: absolute; right: 10px; top: 38px; cursor: pointer;"></i>
+                          <div *ngIf="adminPwdModel.invalid && adminPwdModel.touched" class="text-danger">Password cannot be empty.</div>
+                        </div>
+                        
+                        <div class="d-flex flex-column align-items-center">
+                          <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                      </form>
+                      <a (click)="forgetAdminPassword()" class="d-block mt-3">Forgot Password?</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header " style="background-color: #D4A136; color: #662523;"><strong>नोडल ऑफिसर की सूची (District Nodal Officer)</strong>
+                  <a href="assets\docs\DO_letter_from_GOI.pdf" target="_blank">
+                    <i style="color: #662523;" class="bi bi-file-pdf"></i>
+                  </a>
+                </div>
+                <div class="card-body">
+                    <p><strong>Contact No.:</strong> 0771-4280018, 4280015, 4280016</p>
+                    <!-- <p><strong>Fax No:</strong> 0771-4280018</p> -->
+                    <p><strong>Department:</strong> IT-Cell CGMSC</p>
+                    <p><strong>Email:</strong> <a href="mailto:it.cgmsc@gov.in">it.cgmsc&#64;gov.in</a>, <a href="mailto:medicine.cgmsc@gov.in">medicine.cgmsc&#64;gov.in</a> </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+          <!-- Tabs navigation -->
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="about-tab" data-bs-toggle="tab" href="#about" role="tab" aria-controls="about" aria-selected="true">About</a>
+            </li>
+            <!-- removed manual tabs -->
+            <!-- <li class="nav-item" role="presentation">
+              <a class="nav-link " id="tutorials-tab" data-bs-toggle="tab" href="#tutorials" role="tab" aria-controls="tutorials" aria-selected="false">Orders/Circulars</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="manuals-tab" data-bs-toggle="tab" href="#manuals" role="tab" aria-controls="manuals" aria-selected="false">User Manuals </a>
+            </li> -->
+            
+          </ul>
+        
+          <!-- Tabs content -->
+          <div class="tab-content mt-3" id="myTabContent">
+
+               <!-- About Tab -->
+               <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="about-tab">
+                <div class="card">
+                  <div class="card-header" style="background-color: #D4A136; color: #662523;" ><strong>About</strong></div>
+                  <div class="card-body">
+                    <p>
+                      The Ayushman Arogya Mandir (AAM) DPDMIS Portal, developed by  Chhattisgarh Medical Services Corporation Limited (CGMSCL), aims to transform the supply, distribution, tracking  ,consumption and ensuring last-mile delivery of drugs and consumables.
+                      <span *ngIf="!showFullText">... <a href="javascript:void(0)" (click)="toggleText()">Read More</a></span>
+                      <span style="text-decoration: solid;" *ngIf="showFullText">
+                        This will help to analyse the availability of essential drugs and ensure accurate stock at the AAM/SHC level. Approx 4400 Ayushman Arogya Mandirs across the Chhattisgarh state providing universal and free Comprehensive Primary Health Care (CPHC). These centers focus on wellness and offer a basic range of health services, including maternal and child healthcare, non-communicable disease care, palliative and rehabilitative care, oral, eye, and ENT care, mental health services, and first-level care for primary health care services. The new DPDMIS portal for Ayushman Arogya Mandir in Chhattisgarh will support this ambitious healthcare initiative by National Health Mission Chhattisgarh(NHM) for ensuring efficient supply chain management, enabling the consistent availability of essential drugs and medical supplies till last mile.
+                        <a href="javascript:void(0)" (click)="toggleText()">Read Less</a>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Video Tutorials Tab -->
+              <div class="tab-pane fade " id="tutorials" role="tabpanel" aria-labelledby="tutorials-tab">
+                <div class="card mb-4">
+                  <div class="card-header" style="background-color: #D4A136; color: #662523;"><strong>Orders</strong></div>
+                  <div class="card-body">
+                    <ul class="list-unstyled">
+                      <li>
+                        1. DO letter from GOI to implement DPDMIS up to the Ayushman Arogya Mandir 
+                        <a href="assets\docs\DO_letter_from_GOI.pdf" target="_blank">
+                          <i style="color: red;" class="bi bi-file-pdf"></i>
+                        </a>
+                      </li>
+                      <li>
+                        2. Health and Family Welfare Department of Chhattisgarh Order to implement DPDMIS till Primary level  
+                        <a href="assets\docs\DO SCM Roadmap_Chhattisgarh.pdf" target="_blank">
+                          <i style="color: red;" class="bi bi-file-pdf"></i>
+                        </a>
+                      </li>
+                      <li>
+                        3. आयुष्मान आरोग्य मंदिर हेतु आवश्यक दवा सूची ,भारत सरकार  (MoHFW Essential Medicine List )  
+                        <a href="assets\docs\DO_letter_from_GOI.pdf" target="_blank">
+                          <i style="color: red;" class="bi bi-file-pdf"></i>
+                        </a>
+                      </li>
+                      <li>
+                        4. छ ग.आवश्यक दवा सूची -2021 (Essential Drug List (EDL) of Chhattisgarh-2021)  
+                        <a href="assets\docs\DO SCM Roadmap_Chhattisgarh.pdf" target="_blank">
+                          <i style="color: red;" class="bi bi-file-pdf"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+          
+            <!-- PDF Manual Downloads Tab -->
+            <div class="tab-pane fade" id="manuals" role="tabpanel" aria-labelledby="manuals-tab">
+              <div class="card">
+                <div class="card-header " style="background-color: #D4A136; color: #662523;"><strong>PDF Manual Downloads</strong></div>
+                <div class="card-body">
+                  <ul class="list-unstyled">
+                    <li>1. वेयरहाउस को इंडेंट एवं दवा प्राप्ति हेतु महत्वपूर्ण निर्देश  (Important Instruction for Indent to Warehouse/Receipts)
+                      <a href="assets\docs\Important_Instruction.pdf" target="_blank">
+                        <i style="color: red;" class="bi bi-file-pdf"></i>
+                      </a>
+                    </li>
+                    <li>
+                      2. एम.आई.एस. उपयोग करने हेतु एप्लीकेशन गाइड  Detailed Documentation of Application
+                      <a href="assets\docs\AAM_Manual.pdf" target="_blank">
+                        <i style="color: red;" class="bi bi-file-pdf"></i>
+                      </a>
+                    </li>
+                  
+                  </ul>
+                </div>
+              </div>
+              <div class="card mt-2">
+                <div class="card-header " style="background-color: #D4A136; color: #662523;" ><strong>Video Tuotorial Downloads</strong></div>
+                <div class="card-body">
+                  <ul class="list-unstyled">
+
+
+                    <li>1. ओपनिंग  स्टॉक की एंट्री कैसे करें (Opening Stock)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+                    <li>2. वेयरहाउस को इंडेंट  (Indent to Warehouse)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+                    <li>3. संबंधित संस्था को इंडेंट (Indent to PHC/CHC)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                          <i class="bi bi-youtube" style="color: red;"></i>
+                        </a>
+                      </a>
+                    </li>
+                    <li>4. प्राप्ति की जानकारी दर्ज करना (Receipt from Warehouse/Facility)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                      
+                    </li>
+                    <li>5. दवा वितरण की जानकारी दर्ज करना (Consumption Entry)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+                    <li>6. स्टॉक रिपोर्ट्स  (Stock Reports/ Parent Facility Stock)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+                    <li>7. स्टॉक  रजिस्टर के माध्यम से किसी दवा की संपूर्ण जानकारी (Stock Register)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+                    <li>8. स्टॉक में रखे हुए नियर एक्सपायरी  बैच की जानकारी ( Near Expiry Reports)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+                    <li>9. वितरण पर रोक लगाई गई दवा बैच की जानकारी (Hold Batch Reports)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+                    <li>10. वेयरहाउस में रखे स्टॉक की जानकारी (Warehouse Stock)
+                      <a href="https://www.youtube.com/watch?v=ORZaCeumRLs" target="_blank">
+                        
+                        <i class="bi bi-youtube" style="color: red;"></i>
+                      </a>
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+        
+         
+            
+            
+            
+          </div>
+        </div>
+
+
+        <!-- <div id="chart">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [dataLabels]="chartOptions.dataLabels"
+            [plotOptions]="chartOptions.plotOptions"
+            [yaxis]="chartOptions.yaxis"
+            [xaxis]="chartOptions.xaxis"
+            [fill]="chartOptions.fill"
+            [title]="chartOptions.title"
+          ></apx-chart>
+        </div> -->
+        
+        
+          
+        </div>
+    </main>
+    <footer class="footer   py-3 mt-5" >
+      <!-- <img  style="align-items:" src="assets/img/cgmsclogo.png" alt="bottom Logo" class="footer-header-logo"> -->
+
+        <div class="container text-center" >
+            <p > <a  style=" color: #662523;">&copy; 2024  Content  Owned and  Maintained by IT-Cell, Chhattisgarh Medical Services Corporation Limited. All Rights Reserved.</a > </p>
+            <p>Version: 1.0.0.1001</p>
+            <!-- <p><a href="#" class="text-white">Send your complaint</a></p> -->
+        </div>
+    </footer>
+</body>
+</html>
+

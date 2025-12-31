@@ -1,0 +1,122 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="line-scale-party" [fullScreen]="true">
+  <p style="color: white"> Please wait... </p>
+</ngx-spinner>
+<ng-container *ngIf="!isLoginPage">
+  <mat-toolbar class="mat-elevation-z8 bg" style="background-color:#D4A136;">
+    <button class="toggle-menubar" style="color: #662523;"  (click)="drawer.toggle()" mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="toolbar-title responsive-title" style="color: #662523;">AAM/SHC</span>
+    <span class="example-spacer"></span>
+    <h4 class="responsive-h4" style="color: #662523;"><strong ></strong>{{username}}</h4>
+    <button mat-icon-button (click)="logout()  " class="logout-button" style="color: #662523;" > 
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </mat-toolbar>
+  
+  <mat-drawer-container autosize >
+    <mat-drawer #drawer  opened="false" mode="side" position="start" mode="over" class="drawer-scroll" >
+      <mat-nav-list>
+        <!-- <mat-list-item>
+          <button routerLink="card" mat-button (click)="drawer.close()" ><mat-icon>dashboard</mat-icon> Dashboard</button>
+        </mat-list-item> -->
+        <mat-list-item (click)="showAAMMenuVisiblity()" >
+          <button  mat-button (click)="drawer.close()" ><mat-icon>home</mat-icon> Home</button>
+        </mat-list-item>
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="tutorials-manuals" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon> Manuals </button>
+        </mat-list-item>
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="OpStocks" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon> Opening Stock</button>
+        </mat-list-item>
+        <!-- <mat-list-item>
+          <button routerLink="indent-to-cgmsc" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon> Indent To Cgmsc</button>
+        </mat-list-item> -->
+        <!-- <mat-list-item>
+          <button routerLink="home" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon> Reagent</button>
+        </mat-list-item> -->
+        <mat-list-item *ngIf="showAAMMenu()">
+          <!-- <button  mat-button (click)="drawer.close()" (click)="getStatus('indent-to-warehouse')" ><mat-icon>list</mat-icon> Indent to Warehouse</button> -->
+          <button  mat-button (click)="drawer.close()" (click)="getStatus('indent-to-warehouse')" ><mat-icon>list</mat-icon> Indent to Parent Facility</button>
+        </mat-list-item>
+         <!-- routerLink="indent-to-warehouse" -->
+         <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="receipt-from-warehouse" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Receipt From Warehouse</button>
+        </mat-list-item>
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button   mat-button (click)="drawer.close()" (click)="getStatus('indent-to-otherfacility')" ><mat-icon>list</mat-icon> Indent to Other Facility</button>
+        </mat-list-item>
+       
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="receipt-from-other-facility" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Receipt From Other Facility</button>
+        </mat-list-item>
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="consuption" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Consumption</button>
+        </mat-list-item>
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="issuereport" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Consumption Report</button>
+        </mat-list-item>
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="stock-register" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Stock Register</button>
+        </mat-list-item >
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="Stock-Report" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>
+            <!-- Stock-Report -->
+            Current Stock 
+          </button>
+        </mat-list-item>
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="Hold-Report" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Hold-Report</button>
+        </mat-list-item>
+        
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="Near-Expiry" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Near-Expiry</button>
+        </mat-list-item>
+       
+
+        <mat-list-item *ngIf="showAAMMenu()">
+          <button routerLink="Parentfacility" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Parent facility Stock</button>
+        </mat-list-item>
+        <mat-list-item  *ngIf="showAAMMenu()">
+          <button routerLink="Warehouse-Stock" mat-button (click)="drawer.close()" ><mat-icon>warehouse</mat-icon>Warehouse-Stock</button>
+        </mat-list-item>
+        <mat-list-item  *ngIf="showAAMConsultantMenu()">
+          <button routerLink="KPIdistWise" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>District Performance</button>
+        </mat-list-item>
+        <mat-list-item  *ngIf="showAAMConsultantMenu()">
+          <button routerLink="FacWiseAAM" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Facility Wise AAM Performance</button>
+        </mat-list-item>
+        <mat-list-item  *ngIf="showAAMConsultantMenu()">
+          <button routerLink="distfacInfo" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>District Facility Information </button>
+        </mat-list-item>
+        <mat-list-item  *ngIf="showAAMConsultantMenu()">
+          <button routerLink="shc-Stock-out" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>EDL Stock-Out</button>
+        </mat-list-item>
+        <mat-list-item  *ngIf="showAAMConsultantMenu()">
+          <button routerLink="AAM-Admin-FacilityWiseItemStock" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Current Stock</button>
+        </mat-list-item>
+        <mat-list-item  *ngIf="showAAMConsultantMenu()">
+          <button routerLink="AAM-Admin-FacilityWiseIssue" mat-button (click)="drawer.close()" ><mat-icon>list</mat-icon>Consumption/Issues</button>
+        </mat-list-item>
+        
+        <!-- Add other menu items here -->
+      </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div style="text-align: center; min-height: 100vh;">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</ng-container>
+
+<ng-container *ngIf="isLoginPage">
+  
+  <router-outlet></router-outlet>
+  <div (click)="handleOutsideClick($event)" class="add-to-home-screen-container">
+    <div [class.show]="showButton" class="add-to-home-screen">
+      <button (click)="addToHomeScreen()">Add to Desktop Shortcut</button>
+      <button class="close-btn" (click)="hideAddToHomeScreen()">×</button>
+    </div>
+  </div>
+</ng-container>

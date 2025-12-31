@@ -1,0 +1,133 @@
+<div class="container mt-4">
+    <!-- <div>
+      <p style="color:red">नोट :  Consumption ,Current Stock के अनुसार  3 माह का इंडेंट टेबलेट/केप्सूल/वायल/इंजेक्शन/एमपुल/सिरप/बाटल/क्रीम/ड्रॉप में प्रतिनग के अनुसार भरेंगे |</p>
+    </div> -->
+    <button class="btn btn-success btn-sm backbutton" (click)="backtoPreviousPage()" style="display: flex; justify-content: flex-start;" >Back</button>
+    <!-- Indent Info -->
+    <div class="d-flex justify-content-center">
+      <div class="card" style="width: 40rem; margin: 10px;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 text-right">
+                <p class="card-text"><strong>Indent No:</strong> {{ reqno | date:'dd-MM-yyyy' }}</p>
+            </div>
+            <div class="col-md-6">
+              <p class="card-text"><strong>Indent Date:</strong> {{ reqDate | date:'dd-MM-yyyy' }}</p>
+            </div>
+            
+            <div class="col-md-6 text-right">
+                <p class="card-text"><strong>WH Issue No:</strong> {{ wHIsueNo }}</p>
+            </div>
+            <div class="col-md-6">
+              <p class="card-text"><strong>WH Issue Date:</strong> {{ wHIsueDT  | date:'dd-MM-yyyy'}}</p>
+            </div>
+            <div class="col-md-6 text-left"> 
+              <p class="card-text"><strong>Receipt No:</strong> {{ receiptnumber }}</p>
+            </div>
+            <div class="col-md-6 text-left"> 
+                <p class="card-text"><strong>Receipt Date:</strong> {{ receiptdate | date:'dd-MM-yyyy'}}</p>
+              </div>
+            <div class="col-md-6 text-right"> 
+              <p style="color:green; display: flex; justify-content: center;"><strong>Status:</strong> {{getStatusText(status)}}</p>
+            </div>
+  
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Dropdowns -->
+    <!-- <label for="drugCategory">Category</label>
+      <select class="form-control" id="categoryid">
+        <option value="" disabled selected>Select an item</option>
+        <option *ngFor="let item of drug" [value]="item.categoryid">
+          {{ item.categoryname }}
+        </option>
+      </select> -->
+      <div class="row">
+        <div class="col-md-6 d-flex justify-content-start">
+          <!-- Align these buttons to the left -->
+          <!-- <button class="btn btn-outline-info btn-sm" (click)="getHCitems(1)">Drugs</button> -->
+          <!-- <button class="btn btn-outline-primary btn-sm" (click)="getHCitems(2)" style="margin-left:5px;">Consumables</button> -->
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+          <!-- Align this button to the right -->
+          <button class="btn btn-outline-primary btn-sm" (click)="printPDF()">Print PDF</button>
+        </div>
+    </div>
+  
+    <!-- Item List Table -->
+    <div class="table-responsive mt-4">
+      <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+          <tr>
+            <th>Select</th>
+            <!-- <th>S.No</th> -->
+            <!-- <th>SR</th> -->
+            <th>Code</th>
+            <th>Item</th>
+            <th>Item Type</th>
+            <th>Strength</th>
+            <!-- <th>Multiple</th> -->
+            <!-- <th>Indent qty</th> -->
+            <th>issuewh</th>
+            <th>Batch</th>
+            <th>MFG DT</th>
+            <th>EXP DT</th>
+            <th>WH Issued QTY</th>
+            <th>Enter Receipt QTY</th>
+            <th>Received QTY</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of receiptDetailsBatch; let i = index">
+            <!-- <td>
+              <input type="checkbox" (change)="onItemSelect(item.itemid, $event)">
+            </td> -->
+            <td>{{ i + 1 }}</td>
+            <!-- <td>{{item.sr}}</td> -->
+            <td>{{ item.itemcode }}</td>
+            <td>{{ item.itemname }}</td>
+            <td>{{ item.itemtypename }}</td>
+            <td>{{ item.strengtH1 }}</td>
+            <!-- <td>{{ item.multiple }}</td> -->
+            <!-- <td>{{ item.indentqty }}</td> -->
+            <td>{{ item.issuewh }}</td>
+            <td>{{ item.batchno }}</td>
+            <td>{{ item.mfgdate }}</td>
+            <td>{{ item.expdate }}</td>
+            <td>{{ item.issuewh }}</td>
+            <td>
+              <input
+                type="number"
+                [(ngModel)]="item.issuewh"
+                (keypress)="validateNumberInput($event)"         
+                (change)="removeNonNumeric($event)" 
+                (input)="updateRequestedQty($event,item.inwno)"
+                [step]="10"                    
+                [min]="10"                      
+                [disabled]="!selectedItems.includes(item.itemid)"
+                >
+                <!-- [class.invalid-input]="item.invalid" -->
+              <!-- <div *ngIf="item.invalid" class="error-message">
+              Must be a multiple of {{item.unitcount}}.
+              </div> -->
+            </td>
+            <td>{{ item.rqty }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button class="btn btn-success btn-sm save-button" (click)="saveData()" [disabled]="isSaveDisabled" >
+      Save
+    </button>
+    <button class="btn btn-primary freez-button" (click)="freezData()"  [disabled]="isFreezeButtonDisabled()">
+      Freez & Complete Receipt
+    </button>
+    <button class="btn btn-danger " (click)="delete()" style="margin-left: 10px;">
+      <i class="bi bi-trash"></i>
+    </button>
+  </div>
+  

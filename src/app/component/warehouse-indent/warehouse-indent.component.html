@@ -1,0 +1,136 @@
+<div class="container mt-4">
+  <!-- <h3 class="text-center "style="color: rgb(50, 50, 164);" ><strong>Add Items for Warehouse Indent</strong></h3> -->
+  <h3 class="text-center "style="color: rgb(50, 50, 164);" ><strong>Add Items for Parent Facility Indent</strong></h3>
+
+  <div>
+    <p style="color:red">नोट :  Consumption ,Current Stock के अनुसार  3 माह का इंडेंट टेबलेट/केप्सूल/वायल/इंजेक्शन/एमपुल/सिरप/बाटल/क्रीम/ड्रॉप में प्रतिनग के अनुसार भरेंगे |</p>
+  </div>
+  <button class="btn btn-success btn-sm backbutton" (click)="backtoPreviousPage()" style="display: flex; justify-content: flex-start;" >Back</button>
+  <!-- Indent Info -->
+  <div class="d-flex justify-content-center">
+    <div class="card" style="width: 32rem; margin: 10px;">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="card-text"><strong>Indent Date:</strong> {{ reqDate | date:'dd-MM-yyyy' }}</p>
+          </div>
+          <div class="col-md-6 text-right">
+            <p class="card-text"><strong>Indent No:</strong> {{ reqno }}</p>
+          </div>
+          <div class="col-md-6 text-left"> 
+            <p class="card-text"><strong>Indent Id:</strong> {{ nocid }}</p>
+          </div>
+          <div class="col-md-6 text-right"> 
+            <p style="color:green; display: flex; justify-content: center;"><strong>Status:</strong> Incomplete</p>
+          </div>
+
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  
+  <!-- Dropdowns -->
+  <!-- <label for="drugCategory">Category</label>
+    <select class="form-control" id="categoryid">
+      <option value="" disabled selected>Select an item</option>
+      <option *ngFor="let item of drug" [value]="item.categoryid">
+        {{ item.categoryname }}
+      </option>
+    </select> -->
+    <div class="container">
+      <!-- Buttons Section -->
+      <div class="row mb-3">
+        <div class="col d-flex justify-content-start">
+          <!-- Align these buttons to the left -->
+          <button class="btn btn-outline-info btn-sm" (click)="getHCitems(1)">Drugs</button>
+          <button class="btn btn-outline-primary btn-sm ms-2" (click)="getHCitems(2)">Consumables</button>
+        </div>
+        <div class="col d-flex justify-content-end">
+          <!-- Align this button to the right -->
+          <button class="btn btn-outline-primary btn-sm" (click)="printPDF()">Print Indent</button>
+        </div>
+      </div>
+    
+      <!-- Search Section -->
+      <div class="row ">
+        <div class=" col-12 col-md-6 col-lg-4 ">
+          <input 
+            type="text"
+            class="form-control"
+            placeholder="Search items"
+            [(ngModel)]="searchTerm"
+          />
+        </div>
+      </div>
+    </div>
+    
+
+  <!-- Item List Table -->
+  <div class="table-responsive mt-4">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>Select</th>
+          <th>S.No</th>
+          <!-- <th>SR</th> -->
+          <th>Code</th>
+          <th>Item Type</th>
+          <th>Item</th>
+          <th>Strength</th>
+          <!-- <th>Multiple</th> -->
+          <th>Unit/SKU</th>
+          <th>Enter Indent Qty</th>
+          <th>Delete</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredItems(); let i = index">
+          <td>
+            <input type="checkbox" (change)="onItemSelect(item.itemid, $event)"  [checked]="selectedItems.includes(item.itemid)"  >
+          </td>
+          <td>{{ i + 1 }}</td>
+          <!-- <td>{{item.sr}}</td> -->
+          <td>{{ item.itemcode }}</td>
+          <td>{{ item.itemtypename }}</td>
+          <td style="text-align: left">{{ item.itemname }}</td>
+          <td style="text-align: left">{{ item.strengtH1 }}</td>
+          <!-- <td>{{ item.multiple }}</td> -->
+          <td>{{ item.unitcount }}</td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="item.indentqty"
+              (keypress)="validateNumberInput($event)"         
+              (change)="removeNonNumeric($event)" 
+              (input)="updateRequestedQty($event, item.itemid,item.sr,item.unitcount)"
+              [step]="10"                    
+              [min]="10"                      
+              [disabled]="!selectedItems.includes(item.itemid)"
+              [class.invalid-input]="item.invalid">
+            <div *ngIf="item.invalid" class="error-message">
+            Must be a multiple of {{item.unitcount}}.
+            </div>
+          </td>
+          <td>
+            <i class="bi bi-trash text-danger" style="cursor: pointer; font-size: 1rem;"></i>
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <button class="btn btn-success btn-sm save-button" (click)="saveData()" (change)="isAnyInvalid()" >
+    Add/Update
+  </button>
+  <!-- <button class="btn btn-danger btn-lg freez-button" (click)="freezData()">
+    Freez & Send to Warehouse 
+  </button> -->
+  <button class="btn btn-danger btn-lg freez-button" (click)="freezData()">
+    Freez & Send to Parent Facility 
+  </button>
+</div>

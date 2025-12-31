@@ -1,0 +1,195 @@
+<div class="container mt-4">
+  <h3 class="text-center mt-4" style="color: rgb(50, 50, 164);"> <strong>Consumption(OPD/Mitanin Issuance) </strong></h3>
+
+    <div style="margin-bottom: 10px;">
+        <button 
+        type="button" 
+        class="btn btn-primary"  
+        (click)="openPopup()" 
+        [disabled]="getIncompleteCount() >= 1">
+        Add New Issue
+      </button>
+
+<!-- Custom Popup Modal for Adding New Issue -->
+<div class="custom-modal" *ngIf="isModalOpen">
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <h5 class="modal-title" style="color:blue;">Add New Issue</h5>
+      <button type="button" class="close-btn" (click)="closePopup()">×</button>
+    </div>
+    <p style="color:red; font-size:12px; text-align: start;" >Note : Last Consumption Date : {{LastConsuptionDate | date:'dd/MM/yyyy'}}</p>
+
+    
+    <div class="custom-modal" *ngIf="isModalOpen">
+      <div class="custom-modal-content">
+        <div class="custom-modal-header">
+          <h5 class="modal-title " style="color:blue;" ><strong>Add New Consumption</strong> </h5>
+          <button type="button" class="close-btn" (click)="closePopup()">×</button>
+        </div>
+    
+        <p style="color:blue; font-size:12px; text-align: start;">Last Consumption Date: {{LastConsuptionDate | date:'dd/MM/yyyy'}}</p>
+    
+        <div class="custom-modal-body">
+          
+          <!-- Radio Button Group: Issue Type -->
+          <div class="row mb-3">
+            <label class="form-label">Issue Type:</label>
+            <div class="col">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" style="border-color: black;"  type="radio" name="option" id="GeneralIssue" value="35713" [(ngModel)]="selectedOption">
+                <label class="form-check-label" for="GeneralIssue">OPD</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" style="border-color: black;" type="radio" name="option" id="MitaninIssue" value="35714" [(ngModel)]="selectedOption">
+                <label class="form-check-label" for="MitaninIssue">Mitanin</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" style="border-color: black;" type="radio" name="option" id="melaCamp" value="35890" [(ngModel)]="selectedOption">
+                <label class="form-check-label" for="melaCamp">Mela/Camp</label>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" style="border-color: black;" type="radio" name="option" id="rhomalefemale" value="35891" [(ngModel)]="selectedOption">
+                <label class="form-check-label" for="rhomalefemale">RHO Male/Female</label>
+              </div>
+            </div>
+            <!-- Error Message for Issue Type -->
+            <div *ngIf="showError && !selectedOption" class="text-danger">
+              Please select an issue type.
+            </div>
+          </div>
+    
+          <!-- Date Picker: Select Date -->
+          <div class="mb-3">
+            <label for="datePicker" class="form-label">Select Date:</label>
+            <input 
+              type="date" 
+              class="form-control" 
+              id="datePicker" 
+              [(ngModel)]="selectedDate" 
+              [max]="todayDate" 
+              required
+              (change)="validateDate()"
+            >
+          
+            <!-- Error Message for Date Picker -->
+            <div *ngIf="showError && (!selectedDate || isFutureDate(selectedDate) || isBeforeLastConsumptionDate(selectedDate))" class="text-danger">
+              <div *ngIf="!selectedDate">Date is required.</div>
+              <div *ngIf="isFutureDate(selectedDate)">Date cannot be in the future.</div>
+              <div *ngIf="isBeforeLastConsumptionDate(selectedDate)">Date cannot be earlier than {{ LastConsuptionDate | date:'dd-MMM-yyyy' }}.</div>
+            </div>
+          </div>
+          
+    
+          <!-- Remarks: Purpose/Mitanin Name -->
+          <div class="mb-3">
+            <label for="wrequestby" class="form-label">Remarks:</label>
+            <input type="text" class="form-control" id="wrequestby" [(ngModel)]="wrequestby" placeholder="Enter Purpose/Mitanin name" required>
+            <!-- Error Message for Remarks -->
+            <div *ngIf="showError && !wrequestby" class="text-danger">
+              Remarks are required.
+            </div>
+          </div>
+          
+        </div>
+    
+        <div class="custom-modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closePopup()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="validateInputs()">Generate</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- <div class="custom-modal-footer">
+      <button type="button" class="btn btn-primary" (click)="submit()">Generate</button>
+      <button type="button" class="btn btn-secondary" (click)="closePopup()">Close</button>
+    </div> -->
+  </div>
+</div>
+
+
+
+
+
+
+
+
+    <div style="display: flex; justify-content: flex-start;">
+
+        <button class="btn btn-outline-primary btn-sm" (click)="getFacMonthIndentReport(0)" >All</button>
+        <button class="btn btn-outline-info btn-sm" style="margin-left: 5px;" (click)="getFacMonthIndentReport('C')">Completed</button>
+        <button class="btn btn-outline-success btn-sm" style="margin-left: 5px;" (click)="getFacMonthIndentReport('I')" >In Completed</button>
+        
+      </div>
+      <p style="color:blue; text-align: end;" > Last Consumption Date : {{LastConsuptionDate | date:'dd/MM/yyyy'}}</p>
+
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">SR</th>
+            <th scope="col">Issue Type</th>
+            <th scope="col">Issue No</th>
+            <th scope="col">Issued Date  </th>
+            <!-- <th scope="col">Warehouse Request Date</th> -->
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+            <!-- <th scope="col">NOC ID</th> -->
+            <!-- <th scope="col">Items Requested</th> -->
+            <!-- <th scope="col">Warehouse ID</th> -->
+            <!-- <th scope="col">Request No.</th> -->
+            <!-- <th scope="col">Indent ID</th> -->
+            <!-- <th scope="col">Facility Receipt ID</th> -->
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of FacMonthIndentReport; let i = index">
+            <td>{{ i + 1 }}</td>
+            <!-- <td>{{ item.nocid }}</td> -->
+            <td>{{ item.wardname }}</td>
+            <td>{{ item.issueno }}</td>
+            <td>{{ item.issuedate ? (item.issuedate | date: 'dd-MM-yyyy') : 'N/A' }}</td>
+
+            <!-- <td>{{ item.wrequestdate || 'N/A' }}</td> -->
+            <td>
+              <span [ngClass]="{
+                'text-danger': item.status === 'IN',
+                'text-success': item.status === 'C'
+              }">
+              <a>
+                {{ getStatusText(item.status) }}
+              </a>
+              <!-- {{ item.istatus }} -->
+              </span>
+            </td>
+            <td>
+              <button type="button" class="btn btn-primary btn-sm" (click)="WarehouseIndent(item)" [disabled]="item.status==='C'" 
+              >show</button>
+              <button type="button" class="btn btn-primary btn-sm"  (click)="printINdent(item)"   style="margin-left:5px;" [disabled]="item.status==='IN'" ><i class="bi bi-printer-fill"></i></button>
+              <!-- <button type="button" class="btn btn-danger btn-sm" (click)="deleteIndent(item.nocid)"  style="margin-left:5px;"  [disabled]="item.istatus==='C'">Delete Indent</button> -->
+              <button type="button" class="btn btn-danger btn-sm" (click)="deleteIndent(item.issueid)" style="margin-left: 5px;" [disabled]="item.status === 'C'">
+                <i class="bi bi-trash"></i>
+              </button>
+              
+              
+            </td>
+            <!-- <td>{{ item.nositemsreq }}</td> -->
+            <!-- <td>{{ item.warehouseid }}</td> -->
+            <!-- <td>{{ item.reqno }}</td> -->
+            <!-- <td>{{ item.indentid }}</td> -->
+            <!-- <td>{{ item.facreceiptid || 'N/A' }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Add this to your index.html file -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
