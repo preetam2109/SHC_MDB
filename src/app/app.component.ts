@@ -1,43 +1,34 @@
-import { ChangeDetectorRef, Component, HostListener, OnInit, ViewChild,DoCheck } from '@angular/core';
+import { Component, OnInit, HostListener, DoCheck, ChangeDetectorRef } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { HardcodedAuthenticationService } from './service/authentication/hardcoded-authentication.service';
-import { MatDrawer } from '@angular/material/sidenav';
 import { ToastrService } from 'ngx-toastr';
-import { GetHeaderInfo } from './Model/GetHeaderInfo';
-import { SharedService } from './service/shared.service';
-import { ApiServiceService } from './service/api-service.service';
-import { ReceiptID } from './Model/ReceiptID';
-import { OpstockCheck } from './Model/OpstockCheck';
+import { MenuServiceService } from './service/menu-service.service';
 import { BasicAuthenticationService } from './service/authentication/basic-authentication.service';
+import { Location } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+
+// import { TokenService } from './services/token.service';
+import { ApiService } from './service/api.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit,DoCheck {
-showAAMMenuVisiblity(){
-  
-if(this.roleName === 'AAM'){
-  this.router.navigate(['home'])
-}else{
-  this.router.navigate(['homeDAC'])
 
-}
-}
+
+export class AppComponent implements OnInit, DoCheck {
+ 
   deferredPrompt: any;
   showButton = false;
-@ViewChild('drawer') drawer!: MatDrawer;
-title='SHC';
-isLoginPage = false;
-username:any;
-receiptID:any
-stocks:GetHeaderInfo[]=[]
-status:any
-opstockCheckvar:OpstockCheck[]=[];
-roleName: string | null = null;
+  title!: 'VENDER REGISTRATION PORTAL'
+  isLoginPage = false;
+  roleName = localStorage.getItem('roleName')
+  firstname = sessionStorage.getItem('firstname')
+  vregid: any;
 
-@HostListener('window:beforeinstallprompt', ['$event'])
+
+  @HostListener('window:beforeinstallprompt', ['$event'])
   onbeforeinstallprompt(e: Event) {
     // Prevent the mini-infobar from appearing on mobile
     e.preventDefault();
@@ -47,54 +38,150 @@ roleName: string | null = null;
     this.showButton = true;
   }
 
-constructor(private cdr: ChangeDetectorRef,public api: ApiServiceService,private toastr: ToastrService,private router: Router,private hardcodedAuthemtication:HardcodedAuthenticationService,public basicAuthentication:BasicAuthenticationService) {}
 
-logout() {
-this.basicAuthentication.logout();
-this.toastr.success('Logout Successfully');
-sessionStorage.clear();
-this.router.navigate(['login'])
-
-}
-  ngOnInit(): void {
-    
-    const role = this.basicAuthentication.getRole();
-    this.roleName = role.roleName;
-    // this.getFacreceiptid(() => {
-    //   this.getHeaderInfo();
-    // });
-    
-    this.username=sessionStorage.getItem('firstname');
-    this.cdr.detectChanges();
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        this.isLoginPage = (event.urlAfterRedirects === '/login' || event.urlAfterRedirects === '/forgetpassword' || event.urlAfterRedirects === '/otp' || event.urlAfterRedirects ==='/first-time-password-change' );
-      }
-      
-    });
-   
-    
+  isExternalLink(route: string): boolean {
+    return route.startsWith('http://') || route.startsWith('https://');
   }
+
+
+
+  menuItems: { label: string; route: string; submenu?: { label: string; route: string }[] }[] = [];
+  expandedMenus: { [key: string]: boolean } = {}; // Track expanded state for each menu item
+
+  toggleSubmenu(menuLabel: string): void {
+    for (const key in this.expandedMenus) {
+      if (key !== menuLabel) {
+        this.expandedMenus[key] = false; // Collapse all other menus
+      }
+    }
+
+    // Toggle the clicked submenu
+    this.expandedMenus[menuLabel] = !this.expandedMenus[menuLabel];
+  }
+  role: any = ''; // Dynamic role
+  constructor(private location: Location,private cdr: ChangeDetectorRef, private menuService: MenuServiceService,
+     private toastr: ToastrService, private router: Router,
+      public basicAuthentication: BasicAuthenticationService, private api:ApiService,
+      private https: HttpClient) { }
+
+     
+
+
+
+  logout() {
+// 
+  
+
+    if (sessionStorage.getItem('roleId') === '482') {
+      sessionStorage.clear();
+      localStorage.clear();
+      this.basicAuthentication.logout();
+      this.toastr.success('Logout Successfully');
+      this.router.navigate(['collector-login'])
+
+    } else {
+      sessionStorage.clear();
+      localStorage.clear();
+      this.basicAuthentication.logout();
+      this.toastr.success('Logout Successfully');
+      this.router.navigate(['login'])
+    }
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+
+  ngOnInit(): void {
+  
+    this.router.events.subscribe(event => {
+      
+      if (event instanceof NavigationEnd) {
+        this.isLoginPage = (event.urlAfterRedirects === '/login' || event.urlAfterRedirects === '/otp' || event.urlAfterRedirects === '/collector-login' || event.urlAfterRedirects === '/public-view' || event.urlAfterRedirects === '/GrowthInProcurmentTabPublic' || event.urlAfterRedirects === '/distributionPublic' || event.urlAfterRedirects === '/IndentPendingWHdashPublic' || event.urlAfterRedirects === '/Registration'   );
+
+        this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
+        this.updateMenu();
+      }
+    });
+
+    // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
+
+  }
+
+ 
+  
+
 
   ngDoCheck(): void {
-    
-  
-    const role = this.basicAuthentication.getRole();
-    this.roleName = role.roleName;
-    this.username=sessionStorage.getItem('firstname');
+    // 
+
+    const role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
+    // this.role = this.basicAuthentication.getRole().roleName; // Fetch dynamic role from the authentication service
+
+    this.roleName = role;
+    this.firstname = sessionStorage.getItem('firstname');
+    if(this.firstname==='Public'){
+      this.firstname='Public View Of Drugs and Consumables'
+    }
+
+    // this.GetVendorDetailsID(sessionStorage.getItem('facilityid'));
+
+
+
     this.cdr.detectChanges();
 
   }
-  showAAMMenu() {
 
-    // 
-    return this.roleName === 'AAM';
+
+  
+  
+
+
+
+  
+  GetVendorDetailsID(supplierId: any) {
+    this.api.getVendorDetailsID(supplierId).subscribe({
+      next: (res: any) => {
+        if (Array.isArray(res) && res.length > 0) {
+          this.vregid=res[0].vregid;
+          console.log('Vendor vregid:', this.vregid);
+          sessionStorage.setItem('vregid',this.vregid)
+        
+        } else {
+          console.warn('No vendor details found.');
+          alert('⚠️ Please generate vendor registration number.');
+          this.router.navigate(['generate-registration']);
+
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching vendor details:', err);
+      }
+    });
+  }
+  
+  private updateMenu() {
     
+    // ;
+    // Check if the role has categories or direct items
+    const hasCategories = ['SEC1', 'DHS', 'CME'].includes(this.role);
+    
+    if (hasCategories) {
+      const category = this.menuService.getSelectedCategory();
+      if (category) {
+        this.menuItems = this.menuService.getMenuItems(this.role);
+      } else {
+        // Handle the case where no category is selected
+        this.menuItems = [];
+      }
+    } else {
+      
+      // For roles without categories, fetch items directly
+      this.menuItems = this.menuService.getMenuItems(this.role);
+    }
   }
-  showAAMConsultantMenu() {
-    return this.roleName === 'AAM Consultant';
-  }
-
+  
   addToHomeScreen() {
     // Hide the app provided install promotion
     this.showButton = false;
@@ -110,113 +197,19 @@ this.router.navigate(['login'])
       this.deferredPrompt = null;
     });
   }
-  hideAddToHomeScreen(){
-    this.showButton=false
+  hideAddToHomeScreen() {
+    this.showButton = false
   }
-  handleOutsideClick(event:Event){
-    if(this.showButton){
+  handleOutsideClick(event: Event) {
+    if (this.showButton) {
       this.hideAddToHomeScreen()
     }
-      }
-      handleInsideClick(event:Event){
+  }
+  handleInsideClick(event: Event) {
     event.stopPropagation();
-      }
-    
-
-
-
-      getFacreceiptid(callback: () => void) {
-        this.api.getFacreceiptid(sessionStorage.getItem('facilityId')).subscribe((res: ReceiptID[]) => {
-            if (!res || res.length === 0 || res[0].facreceiptid === undefined || res[0].facreceiptid === null) {
-                alert('कृपया पहले ओपनिंग स्टॉक विवरण दर्ज कर फ्रीज़ करें, तत्पश्चात इंडेंट तो वेयरहाउस किया जा सकेगा|');
-                this.router.navigate(['OpStocks']);
-            } else {
-                // If facreceiptid exists, assign it to receiptID
-                this.receiptID = res[0].facreceiptid;
-                callback();
-            }
-        },
-        (error) => {
-            console.error('Error fetching facreceiptid:', error);
-            alert('Error occurred while fetching receipt ID.');
-            this.router.navigate(['OpStocks']);
-        });
-    }
-      
-
-
-  getStatus(menuType:any) {
-    
-
-    this.api.getOpstockCheck(sessionStorage.getItem('facilityId')).subscribe((res:OpstockCheck[])=>{
-      // console.log('receiptid check',res)
-      this.opstockCheckvar=res[0].opreceiptid;
-      // console.log('receiptid check',this.opstockCheckvar)
-      if(res[0].opreceiptid===0){
-        alert('कृपया पहले ओपनिंग स्टॉक विवरण दर्ज कर फ्रीज़ करें, तत्पश्चात इंडेंट तो वेयरहाउस किया जा सकेगा|');
-        this.router.navigate(['OpStocks']);
-      }else{
-  // Navigate based on which menu item was clicked
-  if (menuType === 'indent-to-otherfacility') {
-    this.router.navigate(['/indent-to-otherfacility']);
-  } else if (menuType === 'indent-to-warehouse') {
-    this.router.navigate(['/indent-to-warehouse']);
   }
-  // Add more conditions if there are additional menu items
-}
-},
-    (error: any) => {
-            console.error(error);
-          }
-  )
-  
-  // First fetch the latest receiptID and header info
-  // this.getFacreceiptid(() => {
-    //   if (this.receiptID) {
-    //     // Now that we have the receiptID, fetch the header info and decide navigation
-    //     this.api.getHeaderInfo(this.receiptID).subscribe(
-    //       (res: GetHeaderInfo[]) => {
-    //         if (res.length > 0) {
-    //           this.status = res[0].status; // Update the status based on the API response
-  
-    //           // Navigate based on the updated status
-    //           if (this.status === 'C') {
-    //             this.router.navigate(['/indent-to-warehouse']);
-    //           } else {
-    //             alert('कृपया पहले ओपनिंग स्टॉक विवरण दर्ज कर फ्रीज़ करें, तत्पश्चात इंडेंट तो वेयरहाउस किया जा सकेगा|');
-    //             this.router.navigate(['OpStocks']);
-    //           }
-    //         } else {
-    //           console.error('No data returned from API');
-    //         }
-    //       },
-    //       (error: any) => {
-    //         console.error(error);
-    //       }
-    //     );
-    //   }
-    // });
-  }
-  
-  
-  getHeaderInfo(){
-    if (this.receiptID) {
-      this.api.getHeaderInfo(this.receiptID).subscribe(
-        (res: GetHeaderInfo[]) => {
-          if (res.length > 0) {
-          console.log("header details",res)
-            this.status=res[0].status
 
-            // alert(this.status)
-          
-          } else {
-            console.error('No data returned from API');
-          }
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-    }
+  isCollectorLogin(): boolean {
+    return this.router.url === '/collector-login';
   }
 }

@@ -1,5 +1,7 @@
+
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import { HardcodedAuthenticationService } from './hardcoded-authentication.service';
 import { BasicAuthenticationService } from './basic-authentication.service';
 
 @Injectable({
@@ -13,7 +15,9 @@ export class RouteGuardService implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const isLoggedIn = this.loginService.isUserLoggedIn() || this.loginService.isAAMConsultantLoggedIn();
+    
+    const isLoggedIn = this.loginService.isUserLogedIn() 
+    // || this.loginService.isAAMConsultantLoggedIn();
     
     if (!isLoggedIn) {
       this.router.navigate(['login']);
@@ -21,12 +25,18 @@ export class RouteGuardService implements CanActivate {
     }
 
     // Retrieve the user's role from the authentication service
+    
     const userRole = this.loginService.getRole().roleName;
+    
 
     // Get the allowed roles from the route data
     const allowedRoles = route.data['allowedRoles'] as string[];
 
+    console.log('User Role:', userRole);
+    console.log('Allowed Roles:', allowedRoles);
+
     // Allow access if the user's role is included in the allowed roles
+    
     if (!allowedRoles || allowedRoles.includes(userRole)) {
       return true;
     } else {

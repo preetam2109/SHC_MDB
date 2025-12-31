@@ -1,105 +1,92 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-
+import { map, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class BasicAuthenticationService {
-
-  private roleSubject = new BehaviorSubject<string | null>(null);
-  role$ = this.roleSubject.asObservable();
-  private roleId: number | null = null;
-  private roleName: any| null = null;
+  private approle : any| null = null;
 
   constructor(private http: HttpClient) { }
 
-  // Authentication method for AAM Consultant
-  executeAuthenticationServiceAAMConsultant(emailORmob: any, password: any) {
-    // const url = `https://dpdmis.in/FourthTierDpdmisAPI/api/Login/LoginDetailsAAMConsultant?emailORmob=${emailORmob}&password=${password}`;
-    const url = `https://dpdmis.in/AAMAPIMR/api/Login/LoginDetailsAAMConsultant?emailORmob=${emailORmob}&password=${password}`;
-    return this.http.post<any>(url, {})
-      .pipe(
-        map(data => {
-          if (data && data.roleid && data.rolename) {
-            this.setRole(data.roleid, data.rolename); // Save role
-          }
-          return data;
-        })
-      );
-  }
-
-  // General authentication method
   executeAuthenticationService(emailid: string, pwd: string) {
     
-    // const url = 'https://dpdmis.in/AamApi/api/Login';
-    const url = 'https://dpdmis.in/AAMAPIMR/api/Login';
-
-
-    return this.http.post<any>(url, { emailid, pwd }).pipe(
-      map(data => {
-        if (data) {
-          sessionStorage.setItem('authenticatedUser', emailid);
-
-          // Save specific user info
+    return this.http.post<any>('https://dpdmis.in/CGMSCHO_API2/api/Login', { emailid, pwd }).pipe(
+      map(
+        data => {
           const userInfo = data.userInfo;
-          
-          sessionStorage.setItem('facilityId', userInfo?.facilityid ?? '');
-          sessionStorage.setItem('userid', userInfo?.userid ?? '');
-          sessionStorage.setItem('firstname', userInfo?.firstname ?? '');
-          sessionStorage.setItem('facilityTypeId', userInfo?.facilitytypeid?.toString() || '');
-          sessionStorage.setItem('warehouseId', ''); // Initialize as an empty string
-          
-          // Save role if available
-          if (userInfo?.roleid && userInfo?.rolename) {
-            this.setRole(userInfo.roleid, userInfo.rolename);
+          sessionStorage.setItem('authenticatedUser', emailid);
+          sessionStorage.setItem('firstname', userInfo.firstname);
+          sessionStorage.setItem('facilityid', userInfo.facilityid);
+          sessionStorage.setItem('roleId', userInfo.roleid);
+          sessionStorage.setItem('districtid', userInfo.districtid);
+          sessionStorage.setItem('userid', userInfo.userid);
+
+          // sessionStorage.setItem('role',data.userInfo.approle);
+          // this.authenticate(emailid,pwd)                                
+          // Optionally, you can store the token or other user info
+
+        // const userInfo = data.userInfo;
+        // const facilityId = userInfo?.facilityid; // Use optional chaining for safety
+        // sessionStorage.setItem('facilityId', facilityId 
+        // // ? facilityId.toString() : ''
+        // );
+         // Convert to string for storage
+        // sessionStorage.setItem('facilityTypeId', userInfo?.facilitytypeid?.toString() || ''); // Handle potential nulls
+        // sessionStorage.setItem('warehouseId', ''); // Set warehouseId to null (empty string)
+           // Save role if available
+           if (userInfo?.rolename) {
+            this.setRole(userInfo.rolename);
           }
+
+          return data;
         }
-        return data;
-      })
+      )
     );
   }
 
-  // Set role information
-  setRole(roleId: number, roleName: string) {
-    this.roleId = roleId;
-    this.roleName = roleName;
-    localStorage.setItem('roleId', roleId.toString());
-    localStorage.setItem('roleName', roleName);
-  }
+  // authenticate(emailid: any, pwd: any) {
+    
+  //   if (emailid === 'SEC1@dpdmis.in' && pwd === 'Admin@cgmsc123') {
+  //     sessionStorage.setItem('authenticatedUser', emailid);
+  //     sessionStorage.setItem('role', 'MD'); // Assign MD role
+  //     return true;
+  //   } else if (emailid === 'gmfin@dpdmis.in') {
+  //     sessionStorage.setItem('authenticatedUser', emailid);
+  //     sessionStorage.setItem('role', 'GM'); // Assign GM role
+  //     return true;
+  //   }else if(emailid==='gm@dpdmis.in'){
+  //     sessionStorage.setItem('authenticatedUser', emailid);
+  //     sessionStorage.setItem('role', 'GMT'); // Assign GT role
+  //     return true;
+  //   }
+  //   return false;
+  // }
+    // Set role information
+    setRole( approle: string) {
+      this.approle = approle;
+      localStorage.setItem('roleName', approle);
+    }
 
-  // Retrieve role information
+     // Retrieve role information
   getRole() {
     return {
-      roleId: this.roleId ?? Number(localStorage.getItem('roleId')),
-      roleName: this.roleName ?? localStorage.getItem('roleName')
+      roleName: this.approle ?? localStorage.getItem('roleName')
     };
   }
 
-  // Check if AAM Consultant is logged in
-  isAAMConsultantLoggedIn(): boolean {
-    const user = sessionStorage.getItem('AAMConsultant');
-    return !!user && !!localStorage.getItem('roleId');
+
+
+  isUserLogedIn() {
+    let user = sessionStorage.getItem('authenticatedUser');
+    return !(user === null);
+  }
+  getUserRole() {
+    return sessionStorage.getItem('role');
   }
 
-  // Check if a general user is logged in
-  isUserLoggedIn(): boolean {
-    const user = sessionStorage.getItem('authenticatedUser');
-    return !!user && !!localStorage.getItem('roleId');
-  }
-
-  // Logout and clear session and local storage
   logout() {
     sessionStorage.removeItem('authenticatedUser');
-    sessionStorage.removeItem('facilityId');
-    sessionStorage.removeItem('userid');
-    sessionStorage.removeItem('firstname');
-    sessionStorage.removeItem('facilityTypeId');
-    sessionStorage.removeItem('warehouseId');
-
-    this.roleId = null;
-    this.roleName = null;
-    localStorage.removeItem('roleId');
-    localStorage.removeItem('roleName');
+    sessionStorage.removeItem('role');
   }
 }
